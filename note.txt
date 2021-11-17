@@ -1,0 +1,33 @@
+
+// run node
+npx hardhat node
+
+// deploy on local
+npx hardhat run scripts/deploy.js --network localhost
+
+// deploy on testnet
+npx hardhat run scripts/deploy.js --network mumbai
+
+nftMarket deployed to: 0xef2A2b03B29F484494897B025fa230dC4D879d5a
+nft deployed to 0xB677646d1795cE8bB30cc5FB1F394FbBa78A7270
+
+// run
+npm run dev
+
+// Git create branch
+git checkout -b <branch>
+git push -u origin <branch>
+
+// delete branch locally
+git branch -d localBranchName
+
+// delete branch remotely
+git push origin --delete remoteBranchName
+
+// Production solution #1
+remove artifact from .gitignore
+factor private key and projectId to environment vaiable
+
+// Production solution #2
+playaround with dependencies and devDependencies
+factor private key and projectId to environment vaiable
