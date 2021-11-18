@@ -2,7 +2,7 @@ import React from "react";
 import cn from "classnames";
 import styles from "./Switch.module.sass";
 
-const Switch = ({ className, value, setValue }) => {
+const Switch = ({ className, value, setValue }: any) => {
   return (
     <label className={cn(styles.switch, className)}>
       <input
