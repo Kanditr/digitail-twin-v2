@@ -10,6 +10,8 @@ import Modal from "../components/Modal/modal";
 import Preview from "./UploadDetails/Preview";
 import Cards from "./UploadDetails/Cards";
 import FolowSteps from "./UploadDetails/FolowSteps";
+import Headers from "../components/Header/header";
+import Footers from "../components/Footer/footer";
 
 const royaltiesOptions = ["10%", "20%", "30%"];
 
@@ -44,6 +46,7 @@ const Upload = () => {
 
   return (
     <>
+      <Headers />
       <div className={cn("section", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.wrapper}>
@@ -196,6 +199,7 @@ const Upload = () => {
       <Modal visible={visibleModal} onClose={() => setVisibleModal(false)}>
         <FolowSteps className={styles.steps} />
       </Modal>
+      <Footers />
     </>
   );
 };

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import cn from "classnames";
 import styles from "./Footer.module.sass";
-import Group from "./Group";
+import Group from "./Group/group";
 import Image from "../Image";
 import Form from "../Form";
 import Theme from "../Theme";
@@ -39,7 +39,7 @@ const items = [
 const Footers = () => {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: void) => {
     alert();
   };
 
@@ -48,13 +48,8 @@ const Footers = () => {
       <div className={cn("container", styles.container)}>
         <div className={styles.row}>
           <div className={styles.col}>
-            <Link className={styles.logo} to="/">
-              <Image
-                className={styles.pic}
-                src="/images/logo-dark.png"
-                srcDark="/images/logo-light.png"
-                alt="Fitness Pro"
-              />
+            <Link href="/">
+              <button className={styles.logo}>Digital Twin</button>
             </Link>
             <div className={styles.info}>The New Creative Economy.</div>
             <div className={styles.version}>

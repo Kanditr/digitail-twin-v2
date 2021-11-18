@@ -11,6 +11,7 @@ import Header from "../components/Header/header";
 // data
 import { bids } from "../mocks/bids";
 import { isStepDivisible } from "react-range/lib/utils";
+import Footers from "../components/Footer/footer";
 
 const navLinks = [
   "On Sale",
@@ -274,6 +275,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      <Footers />
     </>
   );
 };
