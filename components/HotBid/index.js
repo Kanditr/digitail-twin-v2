@@ -3,7 +3,7 @@ import cn from "classnames";
 import Slider from "react-slick";
 import styles from "./HotBid.module.sass";
 import Icon from "../Icon";
-import Card from "../Card";
+import Card from "../Card/card";
 
 // data
 import { bids } from "../../mocks/bids";
