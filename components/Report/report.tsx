@@ -3,7 +3,7 @@ import cn from "classnames";
 import styles from "./Report.module.sass";
 import TextArea from "../TextArea";
 
-const Report = ({ className }) => {
+const Report = ({ className }: any) => {
   return (
     <div className={cn(className, styles.transfer)}>
       <div className={cn("h4", styles.title)}>Report</div>

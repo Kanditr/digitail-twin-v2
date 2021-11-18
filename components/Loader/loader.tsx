@@ -2,7 +2,7 @@ import React from "react";
 import cn from "classnames";
 import styles from "./Loader.module.sass";
 
-const Loader = ({ className, color }) => {
+const Loader = ({ className, color }: any) => {
   return (
     <div
       className={cn(styles.loader, className, {
