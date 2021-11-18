@@ -4,6 +4,8 @@ import cn from "classnames";
 // import styles from "./UploadVariants.module.sass";
 import styles from "./UploadVariants/UploadVariants.module.sass";
 import Control from "../components/Control";
+import Footers from "../components/Footer/footer";
+import Headers from "../components/Header/header";
 
 const breadcrumbs = [
   {
@@ -33,37 +35,45 @@ const items = [
 const Upload = () => {
   return (
     // page
-    <div className={styles.page}>
-      <Control className={styles.control} item={breadcrumbs} />
-      <div className={cn("section-pt80", styles.section)}>
-        <div className={cn("container", styles.container)}>
-          <div className={styles.top}>
-            <h1 className={cn("h2", styles.title)}>Upload item</h1>
-            <div className={styles.info}>
-              Choose <span>“Single”</span> if you want your collectible to be
-              one of a kind or <span>“Multiple”</span> if you want to sell one
-              collectible multiple times
-            </div>
-          </div>
-          <div className={styles.list}>
-            {items.map((x, index) => (
-              <div className={styles.item} key={index}>
-                <div className={styles.preview}>
-                  <img srcSet={`${x.image2x} 2x`} src={x.image} alt="Upload" />
-                </div>
-                <div className={cn("button-stroke", styles.button)}>
-                  <Link href={x.url}>{x.buttonText}</Link>
-                </div>
+    <>
+      <Headers />
+      <div className={styles.page}>
+        <Control className={styles.control} item={breadcrumbs} />
+        <div className={cn("section-pt80", styles.section)}>
+          <div className={cn("container", styles.container)}>
+            <div className={styles.top}>
+              <h1 className={cn("h2", styles.title)}>Upload item</h1>
+              <div className={styles.info}>
+                Choose <span>“Single”</span> if you want your collectible to be
+                one of a kind or <span>“Multiple”</span> if you want to sell one
+                collectible multiple times
               </div>
-            ))}
-          </div>
-          <div className={styles.note}>
-            We do not own your private keys and cannot access your funds without
-            your confirmation.
+            </div>
+            <div className={styles.list}>
+              {items.map((x, index) => (
+                <div className={styles.item} key={index}>
+                  <div className={styles.preview}>
+                    <img
+                      srcSet={`${x.image2x} 2x`}
+                      src={x.image}
+                      alt="Upload"
+                    />
+                  </div>
+                  <div className={cn("button-stroke", styles.button)}>
+                    <Link href={x.url}>{x.buttonText}</Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className={styles.note}>
+              We do not own your private keys and cannot access your funds
+              without your confirmation.
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <Footers />
+    </>
   );
 };
 

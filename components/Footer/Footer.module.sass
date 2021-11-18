@@ -49,13 +49,16 @@
         +t
             width: 100%
             padding: 0
-    
+
 .logo
     display: inline-block
     margin-bottom: 32px
+    font-size: 32px
+    +dark
+        color: $neutrals7
     img
         width: 128px
-    
+
 .info
     max-width: 256px
     +body-1
@@ -105,9 +108,9 @@
     +m
         display: none
     a
-        margin-left: 16px 
+        margin-left: 16px
         font-weight: 600
         color: $blue
         transition: color .2s
         &:hover
-            color: darken($blue, 10)   
+            color: darken($blue, 10)

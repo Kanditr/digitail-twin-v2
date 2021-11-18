@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import cn from "classnames";
 import styles from "./Group.module.sass";
 import Icon from "../../Icon";
 
-const Group = ({ className, item }) => {
+const Group = ({ className, item }: any) => {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -14,7 +14,7 @@ const Group = ({ className, item }) => {
         <Icon name="arrow-bottom" size="10" />
       </div>
       <div className={styles.menu}>
-        {item.menu.map((x, index) =>
+        {item.menu.map((x: any, index: any) =>
           x.url.startsWith("http") ? (
             <a
               className={styles.link}
@@ -26,8 +26,8 @@ const Group = ({ className, item }) => {
               {x.title}
             </a>
           ) : (
-            <Link className={styles.link} to={x.url} key={index}>
-              {x.title}
+            <Link href={x.url} key={index}>
+              <button className={styles.link}>{x.title}</button>
             </Link>
           )
         )}
