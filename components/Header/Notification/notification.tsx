@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import Link from "next/link";
 import cn from "classnames";
 import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./Notification.module.sass";
@@ -40,7 +40,7 @@ const items = [
   },
 ];
 
-const Notification = ({ className }) => {
+const Notification = ({ className }: any) => {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -57,33 +57,34 @@ const Notification = ({ className }) => {
             <div className={cn("h4", styles.title)}>Notification</div>
             <div className={styles.list}>
               {items.map((x, index) => (
-                <Link
-                  className={styles.item}
-                  to={x.url}
-                  onClick={() => setVisible(!visible)}
-                  key={index}
-                >
-                  <div className={styles.preview}>
-                    <img src={x.image} alt="Notification" />
-                  </div>
-                  <div className={styles.details}>
-                    <div className={styles.subtitle}>{x.title}</div>
-                    <div className={styles.price}>{x.price}</div>
-                    <div className={styles.date}>{x.date}</div>
-                  </div>
+                <Link href={x.url} key={index}>
                   <div
-                    className={styles.status}
-                    style={{ backgroundColor: x.color }}
-                  ></div>
+                    className={styles.item}
+                    onClick={() => setVisible(!visible)}
+                  >
+                    <div className={styles.preview}>
+                      <img src={x.image} alt="Notification" />
+                    </div>
+                    <div className={styles.details}>
+                      <div className={styles.subtitle}>{x.title}</div>
+                      <div className={styles.price}>{x.price}</div>
+                      <div className={styles.date}>{x.date}</div>
+                    </div>
+                    <div
+                      className={styles.status}
+                      style={{ backgroundColor: x.color }}
+                    ></div>
+                  </div>
                 </Link>
               ))}
             </div>
-            <Link
-              className={cn("button-small", styles.button)}
-              to="/activity"
-              onClick={() => setVisible(!visible)}
-            >
-              See all
+            <Link href="/activity">
+              <div
+                className={cn("button-small", styles.button)}
+                onClick={() => setVisible(!visible)}
+              >
+                See all
+              </div>
             </Link>
           </div>
         )}

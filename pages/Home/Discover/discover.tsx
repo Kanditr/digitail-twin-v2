@@ -4,7 +4,7 @@ import styles from "./Discover.module.sass";
 import { Range, getTrackBackground } from "react-range";
 import Slider from "react-slick";
 import Icon from "../../../components/Icon";
-import Card from "../../../components/Card";
+import Card from "../../../components/Card/card";
 import Dropdown from "../../../components/Dropdown";
 
 // data
@@ -16,10 +16,10 @@ const dateOptions = ["Recently added", "Long added"];
 const priceOptions = ["Highest price", "The lowest price"];
 const likesOptions = ["Most liked", "Least liked"];
 const creatorOptions = ["Verified only", "All", "Most liked"];
-const sortingOptions = [];
+const sortingOptions = [] as any[];
 navLinks.map((x) => sortingOptions.push(x));
 
-const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
+const SlickArrow = ({ currentSlide, slideCount, children, ...props }: any) => (
   <button {...props}>{children}</button>
 );
 
@@ -66,7 +66,7 @@ const Discover = () => {
         settings: "unslick",
       },
     ],
-  };
+  } as any;
 
   return (
     <div className={cn("section", styles.section)}>
