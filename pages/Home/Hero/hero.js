@@ -5,9 +5,10 @@ import Slider from "react-slick";
 import styles from "../Hero/Hero.module.sass";
 import Icon from "../../../components/Icon";
 import Player from "../../../components/Player/index";
-import Modal from "../../../components/Modal/index";
+// import Modal from "../../../components/Modal/index";
 import Connect from "../../../components/Connect/index";
 import Bid from "../../../components/Bid";
+import Modal from "../../../components/Modal/modal";
 
 const items = [
   {
@@ -16,8 +17,8 @@ const items = [
     currency: "1.00 ETH",
     price: "$3,618.36",
     avatar: "/images/content/avatar-creator.jpg",
-    image: "/images/content/video-preview.jpg",
-    image2x: "/images/content/video-preview@2x.jpg",
+    image: "/images/content/card-pic-1.jpg",
+    image2x: "/images/content/card-pic-1@2x.jpg",
   },
   {
     title: "Marco carrillo®",
@@ -25,8 +26,8 @@ const items = [
     currency: "2.00 ETH",
     price: "$2,477.92",
     avatar: "/images/content/avatar-creator.jpg",
-    image: "/images/content/video-preview.jpg",
-    image2x: "/images/content/video-preview@2x.jpg",
+    image: "/images/content/card-pic-2.jpg",
+    image2x: "/images/content/card-pic-2@2x.jpg",
   },
   {
     title: "the creator network®",
@@ -34,8 +35,8 @@ const items = [
     currency: "1.00 ETH",
     price: "$3,618.36",
     avatar: "/images/content/avatar-creator.jpg",
-    image: "/images/content/video-preview.jpg",
-    image2x: "/images/content/video-preview@2x.jpg",
+    image: "/images/content/card-pic-3.jpg",
+    image2x: "/images/content/card-pic-3@2x.jpg",
   },
   {
     title: "Marco carrillo®",
@@ -43,8 +44,8 @@ const items = [
     currency: "2.00 ETH",
     price: "$2,477.92",
     avatar: "/images/content/avatar-creator.jpg",
-    image: "/images/content/video-preview.jpg",
-    image2x: "/images/content/video-preview@2x.jpg",
+    image: "/images/content/card-pic-4.jpg",
+    image2x: "/images/content/card-pic-4@2x.jpg",
   },
 ];
 
@@ -146,9 +147,11 @@ const Hero = () => {
                           Place a bid
                         </button>
                         <Link href="/item">
-                          <div className={cn("button-stroke", styles.button)}>
+                          <button
+                            className={cn("button-stroke", styles.button)}
+                          >
                             View item
-                          </div>
+                          </button>
                         </Link>
                       </div>
                     </div>
@@ -159,12 +162,13 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      {/* <Modal
+      <Modal
         visible={visibleModalBid}
         onClose={() => setVisibleModalBid(false)}
       >
         <Connect />
-      </Modal> */}
+      </Modal>
+      {/* <Modal /> */}
     </div>
   );
 };

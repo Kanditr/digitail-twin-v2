@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import cn from "classnames";
 import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./User.module.sass";
@@ -28,7 +28,7 @@ const items = [
   },
 ];
 
-const User = ({ className }) => {
+const User = ({ className }: any) => {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -86,16 +86,16 @@ const User = ({ className }) => {
                       <div className={styles.text}>{x.title}</div>
                     </a>
                   ) : (
-                    <Link
-                      className={styles.item}
-                      to={x.url}
-                      onClick={() => setVisible(!visible)}
-                      key={index}
-                    >
-                      <div className={styles.icon}>
-                        <Icon name={x.icon} size="20" />
+                    <Link href={x.url} key={index}>
+                      <div
+                        className={styles.item}
+                        onClick={() => setVisible(!visible)}
+                      >
+                        <div className={styles.icon}>
+                          <Icon name={x.icon} size="20" />
+                        </div>
+                        <div className={styles.text}>{x.title}</div>
                       </div>
-                      <div className={styles.text}>{x.title}</div>
                     </Link>
                   )
                 ) : (

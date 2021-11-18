@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import Link from "next/link";
 import cn from "classnames";
 import styles from "./Header.module.sass";
 import Icon from "../Icon";
 import Image from "../Image";
-import Notification from "./Notification";
-import User from "./User";
+import Notification from "./Notification/notification";
+import User from "./User/user";
 
 const nav = [
   {
@@ -30,31 +30,25 @@ const Headers = () => {
   const [visibleNav, setVisibleNav] = useState(false);
   const [search, setSearch] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: void) => {
     alert();
   };
 
   return (
     <header className={styles.header}>
       <div className={cn("container", styles.container)}>
-        <Link className={styles.logo} to="/">
-          <Image
-            className={styles.pic}
-            src="/images/logo-dark.png"
-            srcDark="/images/logo-light.png"
-            alt="Fitness Pro"
-          />
+        <Link href="/">
+          <button className={styles.logo}>Digital Twin</button>
         </Link>
         <div className={cn(styles.wrapper, { [styles.active]: visibleNav })}>
           <nav className={styles.nav}>
             {nav.map((x, index) => (
               <Link
-                className={styles.link}
                 // activeClassName={styles.active}
-                to={x.url}
+                href={x.url}
                 key={index}
               >
-                {x.title}
+                <button className={styles.link}>{x.title}</button>
               </Link>
             ))}
           </nav>
@@ -76,25 +70,20 @@ const Headers = () => {
               <Icon name="search" size="20" />
             </button>
           </form>
-          <Link
-            className={cn("button-small", styles.button)}
-            to="/upload-variants"
-          >
-            Upload
+          <Link href="/upload-variants">
+            <button className={cn("button-small", styles.button)}>
+              Upload
+            </button>
           </Link>
         </div>
         <Notification className={styles.notification} />
-        <Link
-          className={cn("button-small", styles.button)}
-          to="/upload-variants"
-        >
-          Upload
+        <Link href="/upload-variants">
+          <button className={cn("button-small", styles.button)}>Upload</button>
         </Link>
-        <Link
-          className={cn("button-stroke button-small", styles.button)}
-          to="/connect-wallet"
-        >
-          Connect Wallet
+        <Link href="/connect-wallet">
+          <button className={cn("button-stroke button-small", styles.button)}>
+            Connect Wallet
+          </button>
         </Link>
         <User className={styles.user} />
         <button

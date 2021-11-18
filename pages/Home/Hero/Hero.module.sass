@@ -1,24 +1,7 @@
 @import ../../../styles/helpers
 
 .section
-    padding: 128px 0
-    background: $neutrals7
-    +x
-        padding: 112px 0
-    +m
-        padding: 64px 0
-    +dark-common
-        background: $neutrals2
-
-.container
-    width: 100%
-    max-width: 1280px
-    margin: 0 auto
-    padding: 0 80px
-    +t
-        padding: 0 40px
-    +m
-        padding: 0 32px
+    overflow: hidden
 
 .head
     max-width: 600px
@@ -178,5 +161,6 @@
     flex-direction: column
     .button
         width: 100%
+
         &:not(:last-child)
             margin-bottom: 8px

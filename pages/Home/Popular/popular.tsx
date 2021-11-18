@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import cn from "classnames";
 import Slider from "react-slick";
-import { Link } from "next/link";
+import Link from "next/link";
 import styles from "./Popular.module.sass";
 import Add from "./Add";
 import Icon from "../../../components/Icon";
@@ -91,7 +91,7 @@ const items = [
   },
 ];
 
-const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
+const SlickArrow = ({ currentSlide, slideCount, children, ...props }: any) => (
   <button {...props}>{children}</button>
 );
 
@@ -181,8 +181,10 @@ const Popular = () => {
                     </div>
                     <div className={styles.control}>
                       <Add className={styles.button} />
-                      <Link className={styles.button} to={x.url}>
-                        <Icon name="arrow-expand" size="24" />
+                      <Link href={x.url}>
+                        <div className={styles.button}>
+                          <Icon name="arrow-expand" size="24" />
+                        </div>
                       </Link>
                     </div>
                   </div>
