@@ -1,6 +1,6 @@
 import React from "react";
 import cn from "classnames";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import styles from "./Control.module.sass";
 import Icon from "../Icon";
 
@@ -10,16 +10,18 @@ const Control = ({ className, item }) => {
       <div className={cn("container", styles.container)}>
         <Link
           className={cn("button-stroke button-small", styles.button)}
-          to="/"
+          href="/"
         >
-          <Icon name="arrow-prev" size="10" />
-          <span>Back to home</span>
+          <div>
+            <Icon name="arrow-prev" size="10" />
+            <span>Back to home</span>
+          </div>
         </Link>
         <div className={styles.breadcrumbs}>
           {item.map((x, index) => (
             <div className={styles.item} key={index}>
               {x.url ? (
-                <Link className={styles.link} to={x.url}>
+                <Link className={styles.link} href={x.url}>
                   {x.title}
                 </Link>
               ) : (
