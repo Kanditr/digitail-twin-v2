@@ -3,7 +3,7 @@ import cn from "classnames";
 import styles from "./Connect.module.sass";
 import Icon from "../Icon";
 
-const Connect = ({ className }) => {
+const Connect = ({ className }: any) => {
   return (
     <div className={cn(className, styles.connect)}>
       <div className={styles.icon}>

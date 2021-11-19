@@ -6,7 +6,7 @@ import styles from "../Hero/Hero.module.sass";
 import Icon from "../../../components/Icon";
 import Player from "../../../components/Player/index";
 // import Modal from "../../../components/Modal/index";
-import Connect from "../../../components/Connect/index";
+import Connect from "../../../components/Connect/connect";
 import Bid from "../../../components/Bid";
 import Modal from "../../../components/Modal/modal";
 
@@ -49,7 +49,7 @@ const items = [
   },
 ];
 
-const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
+const SlickArrow = ({ currentSlide, slideCount, children, ...props }: any) => (
   <button {...props}>{children}</button>
 );
 
@@ -86,9 +86,9 @@ const Hero = () => {
               The new creative economy.
             </h2>
             <Link href="/search01">
-              <div className={cn("button-stroke", styles.button)}>
+              <button className={cn("button-stroke", styles.button)}>
                 Start your search
-              </div>
+              </button>
             </Link>
           </div>
           <div className={styles.wrapper}>
@@ -168,7 +168,6 @@ const Hero = () => {
       >
         <Connect />
       </Modal>
-      {/* <Modal /> */}
     </div>
   );
 };
