@@ -5,6 +5,8 @@ import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./User.module.sass";
 import Icon from "../../Icon";
 import Theme from "../../Theme";
+import { injected } from "../../wallet/connector";
+import { useWeb3React } from "@web3-react/core";
 
 const items = [
   {
@@ -24,12 +26,27 @@ const items = [
   {
     title: "Disconnect",
     icon: "exit",
-    url: "https://ui8.net/ui8/products/crypter-nft-marketplace-ui-kit",
+    url: "http/",
+    click: true,
   },
 ];
 
 const User = ({ className }: any) => {
   const [visible, setVisible] = useState(false);
+
+  const { active, account, library, connector, activate, deactivate } =
+    useWeb3React();
+
+  var firstAcc = account?.slice(0, 14);
+  var lastAcc = account?.slice(account.length - 4);
+
+  async function disconnect() {
+    try {
+      deactivate();
+    } catch (ex) {
+      console.log(ex);
+    }
+  }
 
   return (
     <OutsideClickHandler onOutsideClick={() => setVisible(false)}>
@@ -46,7 +63,9 @@ const User = ({ className }: any) => {
           <div className={styles.body}>
             <div className={styles.name}>Enrico Cole</div>
             <div className={styles.code}>
-              <div className={styles.number}>0xc4c16ab5ac7d...b21a</div>
+              <div className={styles.number}>
+                {firstAcc}...{lastAcc}
+              </div>
               <button className={styles.copy}>
                 <Icon name="copy" size="16" />
               </button>
@@ -73,12 +92,12 @@ const User = ({ className }: any) => {
             <div className={styles.menu}>
               {items.map((x, index) =>
                 x.url ? (
-                  x.url.startsWith("http") ? (
+                  x.click === true ? (
                     <a
                       className={styles.item}
-                      href={x.url}
                       rel="noopener noreferrer"
                       key={index}
+                      onClick={disconnect}
                     >
                       <div className={styles.icon}>
                         <Icon name={x.icon} size="20" />
