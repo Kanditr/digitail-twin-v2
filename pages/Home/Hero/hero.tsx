@@ -12,7 +12,7 @@ import Modal from "../../../components/Modal/modal";
 
 const items = [
   {
-    title: "Digital Twin®",
+    title: "Digital Twin Network®",
     creator: "Enrico Cole",
     currency: "1.00 ETH",
     price: "$3,618.36",
