@@ -2,7 +2,7 @@ import React from "react";
 import cn from "classnames";
 import styles from "./RemoveSale.module.sass";
 
-const RemoveSale = ({ className }) => {
+const RemoveSale = ({ className }: any) => {
   return (
     <div className={cn(className, styles.transfer)}>
       <div className={cn("h4", styles.title)}>Remove from sale</div>

@@ -2,7 +2,7 @@ import React from "react";
 import cn from "classnames";
 import styles from "./Transfer.module.sass";
 
-const Transfer = ({ className }) => {
+const Transfer = ({ className }: any) => {
   return (
     <div className={cn(className, styles.transfer)}>
       <div className={cn("h4", styles.title)}>Transfer token</div>
