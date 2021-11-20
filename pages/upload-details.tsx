@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import cn from "classnames";
 import styles from "./UploadDetails/UploadDetails.module.sass";
-import Dropdown from "../components/Dropdown";
+import Dropdown from "../components/Dropdown/dropdown";
 import Icon from "../components/Icon";
 import TextInput from "../components/TextInput";
 import Switch from "../components/Switch/switch";

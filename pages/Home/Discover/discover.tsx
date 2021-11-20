@@ -5,7 +5,7 @@ import { Range, getTrackBackground } from "react-range";
 import Slider from "react-slick";
 import Icon from "../../../components/Icon";
 import Card from "../../../components/Card/card";
-import Dropdown from "../../../components/Dropdown";
+import Dropdown from "../../../components/Dropdown/dropdown";
 
 // data
 import { bids } from "../../../mocks/bids";

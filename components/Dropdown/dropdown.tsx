@@ -4,10 +4,10 @@ import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./Dropdown.module.sass";
 import Icon from "../Icon";
 
-const Dropdown = ({ className, value, setValue, options }) => {
+const Dropdown = ({ className, value, setValue, options }: any) => {
   const [visible, setVisible] = useState(false);
 
-  const handleClick = (value) => {
+  const handleClick = (value: any) => {
     setValue(value);
     setVisible(false);
   };
@@ -24,12 +24,12 @@ const Dropdown = ({ className, value, setValue, options }) => {
           </div>
         </div>
         <div className={styles.body}>
-          {options.map((x, index) => (
+          {options.map((x: any, index: any) => (
             <div
               className={cn(styles.option, {
                 [styles.selectioned]: x === value,
               })}
-              onClick={() => handleClick(x, index)}
+              onClick={() => handleClick({ x, index })}
               key={index}
             >
               {x}
