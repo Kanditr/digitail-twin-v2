@@ -10,8 +10,8 @@ import { useWeb3React } from "@web3-react/core";
 
 const nav = [
   {
-    url: "/search01",
-    title: "Discover",
+    url: "/explore",
+    title: "Explore",
   },
   {
     url: "/faq",
