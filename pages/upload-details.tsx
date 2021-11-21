@@ -7,11 +7,15 @@ import TextInput from "../components/TextInput";
 import Switch from "../components/Switch/switch";
 import Loader from "../components/Loader/loader";
 import Modal from "../components/Modal/modal";
-import Preview from "./UploadDetails/Preview";
+import Preview from "./UploadDetails/Preview/preview";
 import Cards from "./UploadDetails/Cards";
 import FolowSteps from "./UploadDetails/FolowSteps";
 import Headers from "../components/Header/header";
 import Footers from "../components/Footer/footer";
+import { create as ipfsHttpClient } from "ipfs-http-client";
+import { useRouter } from "next/router";
+import { ethers } from "ethers";
+import Web3Modal from "web3modal";
 
 const royaltiesOptions = ["10%", "20%", "30%"];
 
@@ -34,15 +38,102 @@ const items = [
   },
 ];
 
+// ipfs client
+const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0" as any);
+
+const nftaddress = process.env.NEXT_PUBLIC_NFT_ADDRESS;
+const nftmarketaddress = process.env.NEXT_PUBLIC_NFT_MARKET_ADDRESS;
+
+import NFT from "../artifacts/contracts/NFT.sol/NFT.json";
+import Market from "../artifacts/contracts/NFTMarket.sol/NFTMarket.json";
+
 const Upload = () => {
-  const [royalties, setRoyalties] = useState(royaltiesOptions[0]);
+  // royalty
+  const [royalties, setRoyalties] = useState(royaltiesOptions[0]) as string[];
+  // switch
   const [sale, setSale] = useState(true);
   const [price, setPrice] = useState(false);
   const [locking, setLocking] = useState(false);
-
+  // follow step modal
   const [visibleModal, setVisibleModal] = useState(false);
-
+  // preview modal
   const [visiblePreview, setVisiblePreview] = useState(false);
+
+  // input form state
+  const [fileUrl, setFileUrl] = useState(null) as any;
+  const [formInput, updateFormInput] = useState({
+    price: "",
+    name: "",
+    description: "",
+  }) as any;
+
+  // router
+  const router = useRouter();
+
+  // create file ipfs url
+  async function onChange(e: any) {
+    const file = e.target.files[0];
+    try {
+      const added = await client.add(file, {
+        progress: (prog) => console.log(`received: ${prog}`),
+      });
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      setFileUrl(url);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  // create item (include file url) ipfs url
+  async function createItem() {
+    const { name, description, price } = formInput;
+    if (!name || !description || !price || !fileUrl) return;
+    const data = JSON.stringify({
+      name,
+      description,
+      image: fileUrl,
+    });
+
+    try {
+      const added = await client.add(data);
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      createSale(url);
+    } catch (error) {
+      console.log("Error uploading file:", error);
+    }
+  }
+
+  // create sale
+  async function createSale(url: any) {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    let contract = new ethers.Contract(nftaddress as string, NFT.abi, signer);
+    let transaction = await contract.createToken(url);
+    let tx = await transaction.wait();
+
+    let event = tx.events[0];
+    let value = event.args[2];
+    let tokenId = value.toNumber();
+
+    const price = ethers.utils.parseUnits(formInput.price, "ether");
+
+    contract = new ethers.Contract(
+      nftmarketaddress as string,
+      Market.abi,
+      signer
+    );
+    let listingPrice = await contract.getListingPrice();
+    listingPrice = listingPrice.toString();
+
+    transaction = await contract.createMarketItem(nftaddress, tokenId, price, {
+      value: listingPrice,
+    });
+    await transaction.wait();
+    router.push("/");
+  }
 
   return (
     <>
@@ -62,13 +153,18 @@ const Upload = () => {
             </div>
             <form className={styles.form} action="">
               <div className={styles.list}>
+                {/* file upload */}
                 <div className={styles.item}>
                   <div className={styles.category}>Upload file</div>
                   <div className={styles.note}>
                     Drag or choose your file to upload
                   </div>
                   <div className={styles.file}>
-                    <input className={styles.load} type="file" />
+                    <input
+                      className={styles.load}
+                      type="file"
+                      onChange={onChange}
+                    />
                     <div className={styles.icon}>
                       <Icon name="upload-file" size="24" />
                     </div>
@@ -77,6 +173,7 @@ const Upload = () => {
                     </div>
                   </div>
                 </div>
+                {/* input form */}
                 <div className={styles.item}>
                   <div className={styles.category}>Item Details</div>
                   <div className={styles.fieldset}>
@@ -86,6 +183,9 @@ const Upload = () => {
                       name="Item"
                       type="text"
                       placeholder='e. g. Redeemable Bitcoin Card with logo"'
+                      onChange={(e: any) =>
+                        updateFormInput({ ...formInput, name: e.target.value })
+                      }
                       required
                     />
                     <TextInput
@@ -94,6 +194,12 @@ const Upload = () => {
                       name="Description"
                       type="text"
                       placeholder="e. g. “After purchasing you will able to recived the logo...”"
+                      onChange={(e: any) =>
+                        updateFormInput({
+                          ...formInput,
+                          description: e.target.value,
+                        })
+                      }
                       required
                     />
                     <div className={styles.row}>
@@ -111,10 +217,16 @@ const Upload = () => {
                       <div className={styles.col}>
                         <TextInput
                           className={styles.field}
-                          label="Size"
-                          name="Size"
+                          label="Price"
+                          name="Price"
                           type="text"
-                          placeholder="e. g. Size"
+                          placeholder="e. g. 10 MATIC"
+                          onChange={(e: any) =>
+                            updateFormInput({
+                              ...formInput,
+                              price: e.target.value,
+                            })
+                          }
                           required
                         />
                       </div>
@@ -125,13 +237,14 @@ const Upload = () => {
                           name="Propertie"
                           type="text"
                           placeholder="e. g. Propertie"
-                          required
+                          // required
                         />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              {/* switch */}
               <div className={styles.options}>
                 <div className={styles.option}>
                   <div className={styles.box}>
@@ -166,6 +279,7 @@ const Upload = () => {
                 </div>
                 <Cards className={styles.cards} items={items} />
               </div>
+              {/* foot */}
               <div className={styles.foot}>
                 <button
                   className={cn("button-stroke tablet-show", styles.button)}
@@ -176,29 +290,34 @@ const Upload = () => {
                 </button>
                 <button
                   className={cn("button", styles.button)}
-                  onClick={() => setVisibleModal(true)}
+                  // onClick={() => {setVisibleModal(true)}}
+                  onClick={createItem}
                   // type="button" hide after form customization
                   type="button"
                 >
                   <span>Create item</span>
                   <Icon name="arrow-next" size="10" />
                 </button>
-                <div className={styles.saving}>
+                {/* <div className={styles.saving}>
                   <span>Auto saving</span>
                   <Loader className={styles.loader} />
-                </div>
+                </div> */}
               </div>
             </form>
           </div>
           <Preview
-            className={cn(styles.preview, { [styles.active]: visiblePreview })}
+            className={cn(styles.preview, {
+              [styles.active]: visiblePreview,
+            })}
             onClose={() => setVisiblePreview(false)}
+            file={fileUrl}
+            form={formInput}
           />
         </div>
       </div>
-      <Modal visible={visibleModal} onClose={() => setVisibleModal(false)}>
+      {/* <Modal visible={visibleModal} onClose={() => setVisibleModal(false)}>
         <FolowSteps className={styles.steps} />
-      </Modal>
+      </Modal> */}
       <Footers />
     </>
   );
