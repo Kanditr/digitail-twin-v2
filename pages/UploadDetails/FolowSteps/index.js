@@ -4,6 +4,7 @@ import styles from "./FolowSteps.module.sass";
 import Icon from "../../../components/Icon";
 import Loader from "../../../components/Loader/loader";
 import LoaderCircle from "../../../components/LoaderCircle";
+import Link from "next/link";
 
 const FolowSteps = ({ className }) => {
   return (
@@ -85,9 +86,9 @@ const FolowSteps = ({ className }) => {
       </div>
       <div className={styles.note}>
         Something went wrong, please{" "}
-        <a href="/#" target="_blank" rel="noopener noreferrer">
+        <Link href="/#" target="_blank" rel="noopener noreferrer">
           try again
-        </a>
+        </Link>
       </div>
     </div>
   );
