@@ -99,7 +99,7 @@ const User = ({ className, item }: any) => {
         </div>
         {/* social */}
         <div className={styles.socials}>
-          {item.map((x: any, index: any) => (
+          {(item || []).map((x: any, index: any) => (
             <a
               className={styles.social}
               href={x.url}

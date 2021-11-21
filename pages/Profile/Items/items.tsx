@@ -8,7 +8,7 @@ const Items = ({ className, items }: any) => {
   return (
     <div className={cn(styles.items, className)}>
       <div className={styles.list}>
-        {items.map((x: any, index: any) => (
+        {(items || []).map((x: any, index: any) => (
           <Card className={styles.card} item={x} key={index} />
         ))}
       </div>

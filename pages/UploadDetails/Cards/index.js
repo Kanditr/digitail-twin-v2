@@ -6,7 +6,7 @@ import Icon from "../../../components/Icon";
 const Cards = ({ className, items }) => {
   return (
     <div className={(className, styles.cards)}>
-      {items.map((x, index) => (
+      {(items || []).map((x, index) => (
         <div className={styles.card} key={index}>
           <div className={styles.plus} style={{ backgroundColor: x.color }}>
             <Icon name="plus" size="24" />

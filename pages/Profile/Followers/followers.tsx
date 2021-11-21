@@ -7,7 +7,7 @@ const Followers = ({ className, items }: any) => {
   return (
     <div className={cn(styles.followers, className)}>
       <div className={styles.list}>
-        {items.map((x: any, index: any) => (
+        {(items || []).map((x: any, index: any) => (
           <div className={styles.item} key={index}>
             <div className={styles.follower}>
               <div className={styles.avatar}>
@@ -34,7 +34,7 @@ const Followers = ({ className, items }: any) => {
             </div>
             <div className={styles.wrap}>
               <div className={styles.gallery}>
-                {x.gallery.map((x: any, index: any) => (
+                {(x.gallery || []).map((x: any, index: any) => (
                   <div className={styles.preview} key={index}>
                     <img src={x} alt="Follower" />
                   </div>

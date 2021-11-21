@@ -6,7 +6,7 @@ const Users = ({ className, items }: any) => {
   return (
     <div className={cn(styles.users, className)}>
       <div className={styles.list}>
-        {items.map((x: any, index: any) => (
+        {(items || []).map((x: any, index: any) => (
           <div className={styles.item} key={index}>
             <div className={styles.avatar}>
               <img src={x.avatar} alt="Avatar" />
