@@ -4,10 +4,10 @@ import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./DropdownEmpty.module.sass";
 import Icon from "../Icon";
 
-const DropdownEmpty = ({ className, value, setValue, options }) => {
+const DropdownEmpty = ({ className, value, setValue, options }: any) => {
   const [visible, setVisible] = useState(false);
 
-  const handleClick = (value) => {
+  const handleClick = (value: any, index: any) => {
     setValue(value);
     setVisible(false);
   };
@@ -22,7 +22,7 @@ const DropdownEmpty = ({ className, value, setValue, options }) => {
           <Icon name="arrow-bottom" size="15" />
         </div>
         <div className={styles.body}>
-          {options.map((x, index) => (
+          {options.map((x: any, index: any) => (
             <div
               className={cn(styles.option, {
                 [styles.selectioned]: x === value,

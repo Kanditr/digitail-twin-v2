@@ -6,7 +6,7 @@ import styles from "./Popular.module.sass";
 import Add from "./Add";
 import Icon from "../../../components/Icon";
 import Dropdown from "../../../components/Dropdown/dropdown";
-import DropdownEmpty from "../../../components/DropdownEmpty";
+import DropdownEmpty from "../../../components/DropdownEmpty/dropdownEmpty";
 
 const items = [
   {
