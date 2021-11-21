@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import cn from "classnames";
-import styles from "./Explore/explore.module.sass";
+import styles from "./Explore/Explore.module.sass";
 import { Range, getTrackBackground } from "react-range";
 import Icon from "../components/Icon";
 import Card from "../components/Card/card";
