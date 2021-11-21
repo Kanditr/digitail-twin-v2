@@ -1,6 +1,6 @@
 import React from "react";
 import cn from "classnames";
-import { Link } from "next/link";
+import Link from "next/link";
 import styles from "./Description.module.sass";
 import Image from "../../../components/Image";
 

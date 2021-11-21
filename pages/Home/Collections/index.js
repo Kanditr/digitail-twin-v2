@@ -1,7 +1,7 @@
 import React from "react";
 import cn from "classnames";
 import Slider from "react-slick";
-import { Link } from "next/link";
+import Link from "next/link";
 import styles from "./Collections.module.sass";
 import Icon from "../../../components/Icon";
 
