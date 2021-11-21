@@ -17,12 +17,12 @@ const Description = () => {
             A creative agency that lead and inspire
           </div>
           <div className={styles.btns}>
-            <Link className={cn("button", styles.button)} to="/upload-variants">
-              Create item
-            </Link>
-            <Link className={cn("button-stroke", styles.button)} to="/search01">
-              Discover more
-            </Link>
+            <div className={cn("button", styles.button)}>
+              <Link href="/upload-variants">Create item</Link>
+            </div>
+            <div className={cn("button-stroke", styles.button)}>
+              <Link href="/search01">Discover more</Link>
+            </div>
           </div>
         </div>
         <div className={styles.gallery}>
