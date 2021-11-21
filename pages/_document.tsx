@@ -17,6 +17,8 @@ class MyDocument extends Document {
         </Head>
         <body>
           <Main />
+          {/* mount our modal portal */}
+          <div id="modal" />
           <NextScript />
         </body>
       </Html>
