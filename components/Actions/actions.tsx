@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import cn from "classnames";
 import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./Actions.module.sass";
-import Transfer from "../Transfer";
-import RemoveSale from "../RemoveSale";
-import Burn from "../Burn";
-import Report from "../Report";
+import Transfer from "../Transfer/transfer";
+import RemoveSale from "../RemoveSale/removeSale";
+import Burn from "../Burn/burn";
+import Report from "../Report/report";
 import Icon from "../Icon";
-import Modal from "../../components/Modal";
+import Modal from "../Modal/modal";
 
-const Actions = ({ className }) => {
+const Actions = ({ className }: any) => {
   const [visible, setVisible] = useState(false);
   const [visibleModalTransfer, setVisibleModalTransfer] = useState(false);
   const [visibleModalRemoveSale, setVisibleModalRemoveSale] = useState(false);

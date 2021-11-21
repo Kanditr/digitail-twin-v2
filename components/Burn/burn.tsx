@@ -2,7 +2,7 @@ import React from "react";
 import cn from "classnames";
 import styles from "./Burn.module.sass";
 
-const Burn = ({ className }) => {
+const Burn = ({ className }: any) => {
   return (
     <div className={cn(className, styles.transfer)}>
       <div className={cn("h4", styles.title)}>Burn token</div>
