@@ -3,7 +3,7 @@ import Link from "next/link";
 import cn from "classnames";
 // import styles from "./UploadVariants.module.sass";
 import styles from "./UploadVariants/UploadVariants.module.sass";
-import Control from "../components/Control";
+import Control from "../components/Control/control";
 import Footers from "../components/Footer/footer";
 import Headers from "../components/Header/header";
 
@@ -59,9 +59,11 @@ const Upload = () => {
                       alt="Upload"
                     />
                   </div>
-                  <div className={cn("button-stroke", styles.button)}>
-                    <Link href={x.url}>{x.buttonText}</Link>
-                  </div>
+                  <Link href={x.url}>
+                    <button className={cn("button-stroke", styles.button)}>
+                      {x.buttonText}
+                    </button>
+                  </Link>
                 </div>
               ))}
             </div>
