@@ -7,7 +7,7 @@ import Icon from "../../../components/Icon";
 import Player from "../../../components/Player/index";
 // import Modal from "../../../components/Modal/index";
 import Connect from "../../../components/Connect/connect";
-import Bid from "../../../components/Bid";
+// import Bid from "../../../components/Bid";
 import Modal from "../../../components/Modal/modal";
 
 const items = [
