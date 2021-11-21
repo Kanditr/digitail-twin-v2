@@ -84,7 +84,7 @@ const Footers = () => {
             Copyright © 2021 UI8 LLC. All rights reserved
           </div>
           <div className={styles.note}>
-            We use cookies for better service. <a href="/#">Accept</a>
+            We use cookies for better service. <Link href="/#">Accept</Link>
           </div>
         </div>
       </div>
