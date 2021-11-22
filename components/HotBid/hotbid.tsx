@@ -8,11 +8,11 @@ import Card from "../Card/card";
 // data
 import { bids } from "../../mocks/bids";
 
-const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
+const SlickArrow = ({ currentSlide, slideCount, children, ...props }: any) => (
   <button {...props}>{children}</button>
 );
 
-const Hot = ({ classSection }) => {
+const Hot = ({ classSection }: any) => {
   const settings = {
     infinite: false,
     speed: 500,
