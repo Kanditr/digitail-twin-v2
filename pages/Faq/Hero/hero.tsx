@@ -4,6 +4,7 @@ import styles from "./Hero.module.sass";
 import Dropdown from "../../../components/Dropdown/dropdown";
 import Icon from "../../../components/Icon";
 import Item from "./Item/item";
+import Link from "next/link";
 
 const items = [
   {
@@ -67,9 +68,9 @@ const Hero = () => {
           <div className={styles.info}>
             Join Stacks community now to get free updates and also alot of
             freebies are waiting for you or{" "}
-            <a href="/#" rel="noopener noreferrer">
-              Contact Support
-            </a>
+            <Link href="/#">
+              <a rel="noopener noreferrer">Contact Support</a>
+            </Link>
           </div>
           <Dropdown
             className={cn("mobile-show", styles.dropdown)}
