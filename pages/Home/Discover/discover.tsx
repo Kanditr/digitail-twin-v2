@@ -44,6 +44,7 @@ const Discover = () => {
     speed: 500,
     slidesToShow: 2,
     slidesToScroll: 1,
+    useTransform: false,
     nextArrow: (
       <SlickArrow>
         <Icon name="arrow-next" size="14" />

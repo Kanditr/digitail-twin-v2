@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import cn from "classnames";
 import Link from "next/link";
 import Slider from "react-slick";
@@ -53,6 +53,26 @@ const SlickArrow = ({ currentSlide, slideCount, children, ...props }: any) => (
   <button {...props}>{children}</button>
 );
 
+// let firstClientX: any, clientX;
+
+// const preventTouch = (e: any) => {
+//   const minValue = 1; // threshold
+
+//   clientX = e.touches[0].clientX - firstClientX;
+
+//   // Vertical scrolling does not work when you start swiping horizontally.
+//   if (Math.abs(clientX) > minValue) {
+//     e.preventDefault();
+//     e.returnValue = false;
+
+//     return false;
+//   }
+// };
+
+// const touchStart = (e: any) => {
+//   firstClientX = e.touches[0].clientX;
+// };
+
 const Hero = () => {
   const settings = {
     infinite: false,
@@ -60,6 +80,7 @@ const Hero = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     adaptiveHeight: true,
+    useTransform: false,
     nextArrow: (
       <SlickArrow>
         <Icon name="arrow-next" size="14" />
@@ -73,6 +94,61 @@ const Hero = () => {
   };
 
   const [visibleModalBid, setVisibleModalBid] = useState(false);
+
+  const [firstClientX, setFirstClientX] = useState() as any;
+  const [firstClientY, setFirstClientY] = useState() as any;
+  const [clientX, setClientX] = useState() as any;
+
+  useEffect(() => {
+    const touchStart = (e: any) => {
+      setFirstClientX(e.touches[0].clientX);
+      setFirstClientY(e.touches[0].clientY);
+    };
+
+    const preventTouch = (e: any) => {
+      const minValue = 70; // threshold
+
+      setClientX((e.touches[0].clientX - firstClientX) as any);
+
+      // Vertical scrolling does not work when you start swiping horizontally.
+      if (Math.abs(clientX as any) > minValue) {
+        // e.preventDefault();
+        e.returnValue = false;
+        return false;
+      }
+    };
+
+    window.addEventListener("touchstart", touchStart);
+    window.addEventListener("touchmove", preventTouch, {
+      passive: false,
+    } as any);
+    return () => {
+      window.removeEventListener("touchstart", touchStart);
+      window.removeEventListener("touchmove", preventTouch, {
+        passive: false,
+      } as any);
+    };
+  }, [clientX, firstClientX, firstClientY]);
+
+  // let containerRef = createRef() as any;
+
+  // useEffect(() => {
+  //   if (containerRef.current) {
+  //     containerRef.current.addEventListener("touchstart", touchStart);
+  //     containerRef.current.addEventListener("touchmove", preventTouch, {
+  //       passive: false,
+  //     });
+  //   }
+
+  //   return () => {
+  //     if (containerRef.current) {
+  //       containerRef.current.removeEventListener("touchstart", touchStart);
+  //       containerRef.current.removeEventListener("touchmove", preventTouch, {
+  //         passive: false,
+  //       });
+  //     }
+  //   };
+  // });
 
   return (
     <div>
