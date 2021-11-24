@@ -11,7 +11,7 @@ const Form = ({
   setValue,
   type,
   name,
-}) => {
+}: any) => {
   return (
     <form className={cn(styles.form, className)} action="" onSubmit={onSubmit}>
       <input
