@@ -4,7 +4,7 @@ import cn from "classnames";
 import styles from "./Footer.module.sass";
 import Group from "./Group/group";
 import Image from "../Image";
-import Form from "../Form";
+import Form from "../Form/form";
 import Theme from "../Theme";
 
 const items = [
@@ -13,7 +13,7 @@ const items = [
     menu: [
       {
         title: "Discover",
-        url: "/search01",
+        url: "/explore",
       },
       {
         title: "Connect wallet",

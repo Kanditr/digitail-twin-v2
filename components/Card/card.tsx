@@ -9,34 +9,38 @@ const Card = ({ className, item }: any) => {
 
   return (
     <div className={cn(styles.card, className)}>
-      <div className={styles.preview}>
-        <div className={styles.previewing}>
-          <div className={styles.previewsub}>
-            <img srcSet={`${item.image2x} 2x`} src={item.image} alt="Card" />
+      <Link href={`/item/${item.id}`}>
+        <div className={styles.preview}>
+          <div className={styles.previewing}>
+            <div className={styles.previewsub}>
+              <img srcSet={`${item.image2x} 2x`} src={item.image} alt="Card" />
+            </div>
+          </div>
+          <div className={styles.control}>
+            <div
+              className={cn(
+                { "status-green": item.category === "green" },
+                styles.category
+              )}
+            >
+              {item.categoryText}
+            </div>
+            <button
+              className={cn(styles.favorite, { [styles.active]: visible })}
+              onClick={() => setVisible(!visible)}
+            >
+              <Icon name="heart" size="20" />
+            </button>
+            <Link href={`/item/${item.id}`}>
+              <button className={cn("button-small", styles.button)}>
+                <span>Place a bid</span>
+                <Icon name="scatter-up" size="16" />
+              </button>
+            </Link>
           </div>
         </div>
-        <div className={styles.control}>
-          <div
-            className={cn(
-              { "status-green": item.category === "green" },
-              styles.category
-            )}
-          >
-            {item.categoryText}
-          </div>
-          <button
-            className={cn(styles.favorite, { [styles.active]: visible })}
-            onClick={() => setVisible(!visible)}
-          >
-            <Icon name="heart" size="20" />
-          </button>
-          <button className={cn("button-small", styles.button)}>
-            <span>Place a bid</span>
-            <Icon name="scatter-up" size="16" />
-          </button>
-        </div>
-      </div>
-      <Link href={item.url}>
+      </Link>
+      <Link href={`/item/${item.id}`}>
         <div className={styles.link}>
           <div className={styles.body}>
             <div className={styles.line}>
