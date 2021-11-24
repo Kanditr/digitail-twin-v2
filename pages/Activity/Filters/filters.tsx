@@ -24,7 +24,7 @@ const Filters = ({
     <div className={cn(styles.filters, className)}>
       <div className={styles.info}>Filters</div>
       <div className={styles.group}>
-        {filters.map((x: any, index: any) => (
+        {(filters || []).map((x: any, index: any) => (
           <Checkbox
             className={styles.checkbox}
             content={x}
