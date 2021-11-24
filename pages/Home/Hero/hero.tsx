@@ -85,7 +85,7 @@ const Hero = () => {
             <h2 className={cn("h3", styles.title)}>
               The new creative economy.
             </h2>
-            <Link href="/search01">
+            <Link href="/explore">
               <button className={cn("button-stroke", styles.button)}>
                 Start your search
               </button>
