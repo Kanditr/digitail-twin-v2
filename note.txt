@@ -33,6 +33,7 @@ playaround with dependencies and devDependencies
 factor private key and projectId to environment vaiable
 
 
+
 [Metamask network setup]
     1. go to metamask network
     2. click 'Custom RPC'
@@ -43,3 +44,4 @@ factor private key and projectId to environment vaiable
         Currency Symbol: "Matic"
         Block Explorer URL: "https://mumbai.polygonscan.com/"
     }
+
