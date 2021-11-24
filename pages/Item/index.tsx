@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import cn from "classnames";
-import styles from "../pages/Item/Item.module.sass";
-import Users from "./Item/Users/users";
-import Control from "./Item/Control/control";
-import Options from "./Item/Options/options";
-import Header from "../components/Header/header";
-import Footers from "../components/Footer/footer";
+import styles from "./Item.module.sass";
+import Users from "./Users/users";
+import Control from "./Control/control";
+import Options from "./Options/options";
+import Header from "../../components/Header/header";
+import Footers from "../../components/Footer/footer";
 
 const navLinks = ["Info", "Owners", "History", "Bids"];
 

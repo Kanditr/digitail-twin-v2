@@ -13,7 +13,7 @@ const items = [
     menu: [
       {
         title: "Discover",
-        url: "/search01",
+        url: "/explore",
       },
       {
         title: "Connect wallet",

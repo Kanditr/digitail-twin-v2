@@ -6,6 +6,7 @@ import Icon from "../../../components/Icon";
 
 const items = [
   {
+    id: "9",
     title: "The future of ETH®",
     content: "Highest bid",
     counter: "18 in stock",
@@ -16,6 +17,7 @@ const items = [
     image2x: "/images/content/selection-pic-1@2x.jpg",
   },
   {
+    id: "10",
     title: "ETH never die",
     content: "1 of 12",
     price: "0.27 ETH",
@@ -25,6 +27,7 @@ const items = [
     image2x: "/images/content/selection-pic-2@2x.jpg",
   },
   {
+    id: "11",
     title: "Future coming soon",
     content: "1 of 3",
     price: "0.27 ETH",
@@ -34,6 +37,7 @@ const items = [
     image2x: "/images/content/selection-pic-1@2x.jpg",
   },
   {
+    id: "12",
     title: "Elon Musk silver coin 3d print",
     content: "1 of 4",
     price: "0.27 ETH",
@@ -80,7 +84,7 @@ const Selection = () => {
             {items.map(
               (x, index) =>
                 index === 0 && (
-                  <Link href={x.url} key={index}>
+                  <Link href={`/item/${x.id}`} key={index}>
                     <div className={styles.card}>
                       <div className={styles.preview}>
                         <img
@@ -113,7 +117,7 @@ const Selection = () => {
             {items.map(
               (x, index) =>
                 index > 0 && (
-                  <Link href={x.url} key={index}>
+                  <Link href={`/item/${x.id}`} key={index}>
                     <div className={styles.item}>
                       <div className={styles.preview}>
                         <img
