@@ -36,7 +36,7 @@ const Discover = () => {
   const [visible, setVisible] = useState(false);
 
   const STEP = 0.1;
-  const MIN = 0.01;
+  const MIN = 0.0;
   const MAX = 10;
 
   const settings = {

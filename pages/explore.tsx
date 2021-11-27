@@ -34,7 +34,7 @@ const Search = () => {
   };
 
   const STEP = 0.1;
-  const MIN = 0.01;
+  const MIN = 0.0;
   const MAX = 10;
 
   return (
