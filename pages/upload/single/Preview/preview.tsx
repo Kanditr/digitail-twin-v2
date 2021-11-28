@@ -1,7 +1,7 @@
 import React from "react";
 import cn from "classnames";
 import styles from "./Preview.module.sass";
-import Icon from "../../../components/Icon";
+import Icon from "../../../../components/Icon";
 
 const Preview = ({ className, onClose, file, form }: any) => {
   return (

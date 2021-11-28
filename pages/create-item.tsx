@@ -46,13 +46,19 @@ export default function CreateItem() {
       image: fileUrl,
     });
 
+    // ipfs
     try {
       const added = await client.add(data);
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
       createSale(url);
+      router.push(`/item/${added.path}`);
     } catch (error) {
       console.log("Error uploading file:", error);
     }
+
+    // add data
+
+    // push to item page
   }
 
   async function createSale(url: any) {
@@ -83,7 +89,6 @@ export default function CreateItem() {
       value: listingPrice,
     });
     await transaction.wait();
-    router.push("/");
   }
 
   return (
