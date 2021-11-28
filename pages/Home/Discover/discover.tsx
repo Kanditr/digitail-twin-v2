@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import cn from "classnames";
 import styles from "./Discover.module.sass";
 import { Range, getTrackBackground } from "react-range";
@@ -6,6 +6,8 @@ import Slider from "react-slick";
 import Icon from "../../../components/Icon";
 import Card from "../../../components/Card/card";
 import Dropdown from "../../../components/Dropdown/dropdown";
+import { db } from "../../../firbase";
+import { collection, getDocs } from "firebase/firestore";
 
 // data
 import { bids } from "../../../mocks/bids";
@@ -67,6 +69,23 @@ const Discover = () => {
       },
     ],
   } as any;
+
+  // get items from firestore
+  const [items, setItems] = useState([]) as any[];
+
+  useEffect(() => {
+    getItems();
+  }, []);
+
+  const getItems = async () => {
+    const querySnapshot = await getDocs(collection(db, "items"));
+    const items = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setItems(items);
+    console.log(items);
+  };
 
   return (
     <div className={cn("section", styles.section)}>
@@ -226,7 +245,7 @@ const Discover = () => {
             className={cn("discover-slider", styles.slider)}
             {...settings}
           >
-            {bids.map((x, index) => (
+            {items.map((x: any, index: any) => (
               <Card className={styles.card} item={x} key={index} />
             ))}
           </Slider>

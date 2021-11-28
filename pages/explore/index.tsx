@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import cn from "classnames";
 import styles from "./Explore.module.sass";
 import { Range, getTrackBackground } from "react-range";
@@ -7,6 +7,8 @@ import Card from "../../components/Card/card";
 import Dropdown from "../../components/Dropdown/dropdown";
 import Header from "../../components/Header/header";
 import Footers from "../../components/Footer/footer";
+import { db } from "../../firbase";
+import { collection, getDocs } from "firebase/firestore";
 
 // data
 import { bids } from "../../mocks/bids";
@@ -36,6 +38,23 @@ const Search = () => {
   const STEP = 0.1;
   const MIN = 0.0;
   const MAX = 10;
+
+  // get items from firestore
+  const [items, setItems] = useState([]) as any[];
+
+  useEffect(() => {
+    getItems();
+  }, []);
+
+  const getItems = async () => {
+    const querySnapshot = await getDocs(collection(db, "items"));
+    const items = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setItems(items);
+    console.log(items);
+  };
 
   return (
     <>
@@ -201,7 +220,7 @@ const Search = () => {
             </div>
             <div className={styles.wrapper}>
               <div className={styles.list}>
-                {bids.map((x, index) => (
+                {items.map((x: any, index: any) => (
                   <Card className={styles.card} item={x} key={index} />
                 ))}
               </div>
