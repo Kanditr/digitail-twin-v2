@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import cn from "classnames";
-import styles from "./Explore/Explore.module.sass";
+import styles from "./Explore.module.sass";
 import { Range, getTrackBackground } from "react-range";
-import Icon from "../components/Icon";
-import Card from "../components/Card/card";
-import Dropdown from "../components/Dropdown/dropdown";
-import Header from "../components/Header/header";
-import Footers from "../components/Footer/footer";
+import Icon from "../../components/Icon";
+import Card from "../../components/Card/card";
+import Dropdown from "../../components/Dropdown/dropdown";
+import Header from "../../components/Header/header";
+import Footers from "../../components/Footer/footer";
 
 // data
-import { bids } from "../mocks/bids";
+import { bids } from "../../mocks/bids";
 
 const navLinks = ["All items", "Art", "Game", "Photography", "Music", "Video"];
 
