@@ -74,14 +74,14 @@ const Headers = () => {
               <Icon name="search" size="20" />
             </button>
           </form>
-          <Link href="/upload-variants">
+          <Link href="/upload">
             <button className={cn("button-small", styles.button)}>
               Upload
             </button>
           </Link>
         </div>
         <Notification className={styles.notification} />
-        <Link href="/upload-variants">
+        <Link href="/upload">
           <button className={cn("button-small", styles.button)}>Upload</button>
         </Link>
         {active === true ? (
