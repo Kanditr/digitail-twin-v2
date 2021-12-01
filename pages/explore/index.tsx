@@ -8,7 +8,7 @@ import Dropdown from "../../components/Dropdown/dropdown";
 import Header from "../../components/Header/header";
 import Footers from "../../components/Footer/footer";
 import { db } from "../../firbase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 // data
 import { bids } from "../../mocks/bids";
@@ -47,7 +47,10 @@ const Search = () => {
   }, []);
 
   const getItems = async () => {
-    const querySnapshot = await getDocs(collection(db, "items"));
+    // do not show sold item in explore page - TBC logic
+    const q = query(collection(db, "items"), where("isSold", "==", false));
+
+    const querySnapshot = await getDocs(q);
     const items = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),

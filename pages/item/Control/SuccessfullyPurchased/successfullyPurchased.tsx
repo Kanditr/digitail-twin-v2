@@ -6,19 +6,19 @@ import Icon from "../../../../components/Icon";
 const socials = [
   {
     title: "facebook",
-    url: "https://www.facebook.com/ui8.net/",
+    url: "/",
   },
   {
     title: "twitter",
-    url: "https://twitter.com/ui8",
+    url: "/",
   },
   {
     title: "instagram",
-    url: "https://www.instagram.com/ui8net/",
+    url: "/",
   },
   {
     title: "pinterest",
-    url: "https://www.pinterest.com/ui8m/",
+    url: "/",
   },
 ];
 
@@ -32,7 +32,7 @@ const SuccessfullyPurchased = ({ className }: any) => {
         </span>
       </div>
       <div className={styles.info}>
-        You successfully purchased <span>C O I N Z</span> from UI8
+        You successfully purchased <span>XXX</span> from XXX
       </div>
       <div className={styles.table}>
         <div className={styles.row}>
@@ -40,10 +40,11 @@ const SuccessfullyPurchased = ({ className }: any) => {
           <div className={styles.col}>Transaction ID</div>
         </div>
         <div className={styles.row}>
-          <div className={styles.col}>Processing</div>
+          <div className={styles.col}>Success</div>
           <div className={styles.col}>0msx836930...87r398</div>
         </div>
       </div>
+      {/* <div className={styles.stage}>Go to profile</div> */}
       <div className={styles.stage}>Time to show-off</div>
       <div className={styles.socials}>
         {socials.map((x, index) => (
