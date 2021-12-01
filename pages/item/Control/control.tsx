@@ -8,8 +8,9 @@ import Accept from "./Accept/accept";
 import PutSale from "./PutSale/putSale";
 import SuccessfullyPurchased from "./SuccessfullyPurchased/successfullyPurchased";
 import Modal from "../../../components/Modal/modal";
+import Item from "..";
 
-const Control = ({ className }: any) => {
+const Control = ({ className, item, id }: any) => {
   const [visibleModalPurchase, setVisibleModalPurchase] = useState(false);
   const [visibleModalBid, setVisibleModalBid] = useState(false);
   const [visibleModalAccept, setVisibleModalAccept] = useState(false);
@@ -77,8 +78,8 @@ const Control = ({ className }: any) => {
         visible={visibleModalPurchase}
         onClose={() => setVisibleModalPurchase(false)}
       >
-        <Checkout />
-        <SuccessfullyPurchased />
+        <Checkout item={item} id={id} />
+        {/* <SuccessfullyPurchased /> */}
       </Modal>
       <Modal
         visible={visibleModalBid}

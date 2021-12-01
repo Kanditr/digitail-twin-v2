@@ -120,7 +120,7 @@ const Item = ({ res }: any) => {
               ))}
             </div>
             <Users className={styles.users} items={users} />
-            <Control className={styles.control} />
+            <Control className={styles.control} item={single} id={id} />
           </div>
         </div>
       </div>

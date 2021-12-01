@@ -112,6 +112,7 @@ const Upload = () => {
     const provider = new ethers.providers.Web3Provider(connection);
     const signer = provider.getSigner();
 
+    // createToken - mint Token
     let contract = new ethers.Contract(nftaddress as string, NFT.abi, signer);
     let transaction = await contract.createToken(url);
     let tx = await transaction.wait();
@@ -122,6 +123,7 @@ const Upload = () => {
 
     const price = ethers.utils.parseUnits(formInput.price, "ether");
 
+    // createMarketItem - put on sale
     contract = new ethers.Contract(
       nftmarketaddress as string,
       Market.abi,
@@ -143,6 +145,8 @@ const Upload = () => {
         description: formInput.description,
         item_url: url,
         file_url: fileUrl,
+        tokenId: tokenId,
+        isSold: false,
       });
       console.log("Document written with ID: ", docRef.id);
       router.push(`/item/${docRef.id}`);
