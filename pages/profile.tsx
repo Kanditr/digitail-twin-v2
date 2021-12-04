@@ -3,9 +3,9 @@ import cn from "classnames";
 import Link from "next/link";
 import styles from "./Profile/Profile.module.sass";
 import Icon from "../components/Icon";
-import User from "./Profile/User/user";
-import Items from "./Profile/Items/items";
-import Followers from "./Profile/Followers/followers";
+import User from "./profile/User/user";
+import Items from "./profile/Items/items";
+import Followers from "./profile/Followers/followers";
 import Header from "../components/Header/header";
 
 // data
