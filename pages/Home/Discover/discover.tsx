@@ -13,12 +13,12 @@ import { collection, getDocs } from "firebase/firestore";
 import { bids } from "../../../mocks/bids";
 
 const navLinks = ["All items", "Art", "Game", "Photography", "Music", "Video"];
-
 const dateOptions = ["Recently added", "Long added"];
 const priceOptions = ["Highest price", "The lowest price"];
 const likesOptions = ["Most liked", "Least liked"];
 const creatorOptions = ["Verified only", "All", "Most liked"];
 const sortingOptions = [] as any[];
+
 navLinks.map((x) => sortingOptions.push(x));
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }: any) => (
@@ -70,13 +70,15 @@ const Discover = () => {
     ],
   } as any;
 
-  // get items from firestore
+  // set items and filtered items
   const [items, setItems] = useState([]) as any[];
+  const [filtered, setFiltered] = useState([]) as any[];
 
   useEffect(() => {
     getItems();
   }, []);
 
+  // get items from firestore
   const getItems = async () => {
     const querySnapshot = await getDocs(collection(db, "items"));
     const items = querySnapshot.docs.map((doc) => ({
@@ -84,8 +86,14 @@ const Discover = () => {
       ...doc.data(),
     }));
     setItems(items);
-    console.log(items);
+    setFiltered(items);
   };
+
+  // filter on click nav
+  function filter(nav: any) {
+    var filtered = items.filter((e: any) => e.category === nav);
+    nav === "All items" ? setFiltered(items) : setFiltered(filtered);
+  }
 
   return (
     <div className={cn("section", styles.section)}>
@@ -98,18 +106,23 @@ const Discover = () => {
               value={date}
               setValue={setDate}
               options={dateOptions}
+              fx={function () {}}
             />
           </div>
           <div className={styles.nav}>
-            {navLinks.map((x, index) => (
+            {navLinks.map((nav, index) => (
               <button
                 className={cn(styles.link, {
-                  [styles.active]: index === activeIndex,
+                  [styles.active]: nav === sorting,
                 })}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => {
+                  setActiveIndex(index);
+                  setSorting(nav);
+                  filter(nav);
+                }}
                 key={index}
               >
-                {x}
+                {nav}
               </button>
             ))}
           </div>
@@ -119,6 +132,7 @@ const Discover = () => {
               value={sorting}
               setValue={setSorting}
               options={sortingOptions}
+              fx={filter}
             />
           </div>
           <button
@@ -141,6 +155,7 @@ const Discover = () => {
                 value={price}
                 setValue={setPrice}
                 options={priceOptions}
+                fx={function () {}}
               />
             </div>
             <div className={styles.cell}>
@@ -150,6 +165,7 @@ const Discover = () => {
                 value={likes}
                 setValue={setLikes}
                 options={likesOptions}
+                fx={function () {}}
               />
             </div>
             <div className={styles.cell}>
@@ -159,6 +175,7 @@ const Discover = () => {
                 value={creator}
                 setValue={setCreator}
                 options={creatorOptions}
+                fx={function () {}}
               />
             </div>
             <div className={styles.cell}>
@@ -245,7 +262,7 @@ const Discover = () => {
             className={cn("discover-slider", styles.slider)}
             {...settings}
           >
-            {items.map((x: any, index: any) => (
+            {filtered.map((x: any, index: any) => (
               <Card className={styles.card} item={x} key={index} />
             ))}
           </Slider>
