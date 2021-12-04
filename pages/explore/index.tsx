@@ -41,6 +41,7 @@ const Search = () => {
 
   // get items from firestore
   const [items, setItems] = useState([]) as any[];
+  const [filtered, setFiltered] = useState([]) as any[];
 
   useEffect(() => {
     getItems();
@@ -48,7 +49,8 @@ const Search = () => {
 
   const getItems = async () => {
     // do not show sold item in explore page - TBC logic
-    const q = query(collection(db, "items"), where("isSold", "==", false));
+    // const q = query(collection(db, "items"), where("isSold", "==", false));
+    const q = query(collection(db, "items"));
 
     const querySnapshot = await getDocs(q);
     const items = querySnapshot.docs.map((doc) => ({
@@ -58,6 +60,12 @@ const Search = () => {
     setItems(items);
     console.log(items);
   };
+
+  // filter on click nav
+  function filter(nav: any) {
+    var filtered = items.filter((e: any) => e.category === nav);
+    nav === "All items" ? setFiltered(items) : setFiltered(filtered);
+  }
 
   return (
     <>
@@ -92,18 +100,22 @@ const Search = () => {
                 value={date}
                 setValue={setDate}
                 options={dateOptions}
+                fx={function () {}}
               />
             </div>
             <div className={styles.nav}>
-              {navLinks.map((x, index) => (
+              {navLinks.map((nav, index) => (
                 <button
                   className={cn(styles.link, {
                     [styles.active]: index === activeIndex,
                   })}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => {
+                    setActiveIndex(index);
+                    filter(nav);
+                  }}
                   key={index}
                 >
-                  {x}
+                  {nav}
                 </button>
               ))}
             </div>
@@ -195,6 +207,7 @@ const Search = () => {
                     value={likes}
                     setValue={setLikes}
                     options={likesOptions}
+                    fx={function () {}}
                   />
                 </div>
                 <div className={styles.item}>
@@ -204,6 +217,7 @@ const Search = () => {
                     value={color}
                     setValue={setColor}
                     options={colorOptions}
+                    fx={function () {}}
                   />
                 </div>
                 <div className={styles.item}>
@@ -213,6 +227,7 @@ const Search = () => {
                     value={creator}
                     setValue={setCreator}
                     options={creatorOptions}
+                    fx={function () {}}
                   />
                 </div>
               </div>
@@ -223,7 +238,7 @@ const Search = () => {
             </div>
             <div className={styles.wrapper}>
               <div className={styles.list}>
-                {items.map((x: any, index: any) => (
+                {filtered.map((x: any, index: any) => (
                   <Card className={styles.card} item={x} key={index} />
                 ))}
               </div>
