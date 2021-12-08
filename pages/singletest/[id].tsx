@@ -1,7 +1,7 @@
 import { collection, addDoc, getDocs, doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { db, app } from "../../firbase";
+import { db, app } from "../../firebase";
 
 const single = (props: any) => {
   const [single, setSingle] = useState({}) as any;

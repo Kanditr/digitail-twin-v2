@@ -5,8 +5,6 @@ import Control from "../components/Control/control";
 import Loader from "../components/Loader/loader";
 import Icon from "../components/Icon";
 import Filters from "./Activity/Filters/filters";
-import Header from "../components/Header/header";
-import Footers from "../components/Footer/footer";
 
 const breadcrumbs = [
   {
@@ -97,7 +95,6 @@ const Activity = () => {
 
   return (
     <>
-      <Header />
       <div className={styles.page}>
         <Control className={styles.control} item={breadcrumbs} />
         <div className={cn("section-pt80", styles.body)}>
@@ -181,7 +178,6 @@ const Activity = () => {
           </div>
         </div>
       </div>
-      <Footers />
     </>
   );
 };

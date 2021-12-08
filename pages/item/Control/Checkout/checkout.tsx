@@ -7,7 +7,7 @@ import Item from "../..";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../../../../firbase";
+import { db } from "../../../../firebase";
 import SuccessfullyPurchased from "../SuccessfullyPurchased/successfullyPurchased";
 
 import NFT from "../../../../artifacts/contracts/NFT.sol/NFT.json";

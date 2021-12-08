@@ -31,14 +31,16 @@ const items = [
   },
 ];
 
-const User = ({ className }: any) => {
+const User = ({ className, user }: any) => {
   const [visible, setVisible] = useState(false);
 
-  const { active, account, library, connector, activate, deactivate } =
-    useWeb3React();
+  const { account, deactivate } = useWeb3React();
 
   var firstAcc = account?.slice(0, 14);
   var lastAcc = account?.slice(account.length - 4);
+
+  var userBalance = user.balance?.slice(0, 7);
+  var userBalanceFour = user.balance?.slice(0, 5);
 
   async function disconnect() {
     try {
@@ -48,20 +50,22 @@ const User = ({ className }: any) => {
     }
   }
 
+  // console.log("hi " + user.profile_username);
+
   return (
     <OutsideClickHandler onOutsideClick={() => setVisible(false)}>
       <div className={cn(styles.user, className)}>
         <div className={styles.head} onClick={() => setVisible(!visible)}>
           <div className={styles.avatar}>
-            <img src="/images/content/avatar-user.jpg" alt="Avatar" />
+            <img src={user.profile_image} alt="Avatar" />
           </div>
           <div className={styles.wallet}>
-            7.00698 <span className={styles.currency}>ETH</span>
+            {userBalance} <span className={styles.currency}>MATIC</span>
           </div>
         </div>
         {visible && (
           <div className={styles.body}>
-            <div className={styles.name}>Enrico Cole</div>
+            <div className={styles.name}>{user.profile_username}</div>
             <div className={styles.code}>
               <div className={styles.number}>
                 {firstAcc}...{lastAcc}
@@ -80,7 +84,7 @@ const User = ({ className }: any) => {
                 </div>
                 <div className={styles.details}>
                   <div className={styles.info}>Balance</div>
-                  <div className={styles.price}>4.689 ETH</div>
+                  <div className={styles.price}>{userBalanceFour} MATIC</div>
                 </div>
               </div>
               <button

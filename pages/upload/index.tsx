@@ -17,6 +17,11 @@ const breadcrumbs = [
   },
 ];
 
+const control = {
+  title: "Back to home",
+  url: "/",
+};
+
 const items = [
   {
     url: "/upload/single",
@@ -36,9 +41,13 @@ const Upload = () => {
   return (
     // page
     <>
-      <Headers />
+      {/* <Headers /> */}
       <div className={styles.page}>
-        <Control className={styles.control} item={breadcrumbs} />
+        <Control
+          className={styles.control}
+          item={breadcrumbs}
+          control={control}
+        />
         <div className={cn("section-pt80", styles.section)}>
           <div className={cn("container", styles.container)}>
             <div className={styles.top}>
@@ -74,7 +83,7 @@ const Upload = () => {
           </div>
         </div>
       </div>
-      <Footers />
+      {/* <Footers /> */}
     </>
   );
 };

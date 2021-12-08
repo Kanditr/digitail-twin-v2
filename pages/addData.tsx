@@ -1,6 +1,6 @@
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { useState } from "react";
-import { db } from "../firbase";
+import { db } from "../firebase";
 
 const addData = () => {
   const addData = async () => {

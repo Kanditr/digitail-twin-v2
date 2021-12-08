@@ -6,14 +6,20 @@ import Report from "../../../components/Report/report";
 import Modal from "../../../components/Modal/modal";
 import { FacebookShareButton, TwitterShareButton } from "react-share";
 // import { isStepDivisible } from "react-range/lib/utils";
+import { useWeb3React } from "@web3-react/core";
 
-const shareUrlFacebook = "https://ui8.net";
-const shareUrlTwitter = "https://ui8.net";
+const shareUrlFacebook = "/";
+const shareUrlTwitter = "/";
 
 const User = ({ className, item }: any) => {
   const [visible, setVisible] = useState(false);
   const [visibleShare, setVisibleShare] = useState(false);
   const [visibleModalReport, setVisibleModalReport] = useState(false);
+
+  const { account } = useWeb3React();
+
+  var firstAcc = account?.slice(0, 14);
+  var lastAcc = account?.slice(account.length - 4);
 
   return (
     <>
@@ -24,7 +30,9 @@ const User = ({ className, item }: any) => {
         <div className={styles.name}>Enrico Cole</div>
         {/* account */}
         <div className={styles.code}>
-          <div className={styles.number}>0xc4c16a645...b21a</div>
+          <div className={styles.number}>
+            {firstAcc}...{lastAcc}
+          </div>
           <button className={styles.copy}>
             <Icon name="copy" size="16" />
           </button>
@@ -35,12 +43,12 @@ const User = ({ className, item }: any) => {
         </div>
         <a
           className={styles.site}
-          href="https://ui8.net"
+          href="/"
           target="_blank"
           rel="noopener noreferrer"
         >
           <Icon name="globe" size="16" />
-          <span>https://ui8.net</span>
+          <span>https://localhost:3000/</span>
         </a>
         <div className={styles.control}>
           <div className={styles.btns}>

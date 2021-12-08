@@ -6,7 +6,7 @@ import Slider from "react-slick";
 import Icon from "../../../components/Icon";
 import Card from "../../../components/Card/card";
 import Dropdown from "../../../components/Dropdown/dropdown";
-import { db } from "../../../firbase";
+import { db } from "../../../firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 // data

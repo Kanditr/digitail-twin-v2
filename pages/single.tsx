@@ -1,6 +1,6 @@
 import { collection, addDoc, getDocs, doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db, app } from "../firbase";
+import { db, app } from "../firebase";
 
 const firebase = () => {
   const [single, setSingle] = useState({}) as any;

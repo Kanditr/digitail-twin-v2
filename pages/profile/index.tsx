@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import cn from "classnames";
 import Link from "next/link";
-import styles from "./Profile/Profile.module.sass";
-import Icon from "../components/Icon";
-import User from "./profile/User/user";
-import Items from "./profile/Items/items";
-import Followers from "./profile/Followers/followers";
-import Header from "../components/Header/header";
+import styles from "./Profile.module.sass";
+import Icon from "../../components/Icon";
+import User from "./User/user";
+import Items from "./Items/items";
+import Followers from "./Followers/followers";
+import Header from "../../components/Header/header";
 
 // data
-import { bids } from "../mocks/bids";
+import { bids } from "../../mocks/bids";
 import { isStepDivisible } from "react-range/lib/utils";
-import Footers from "../components/Footer/footer";
+import Footers from "../../components/Footer/footer";
 
 const navLinks = [
   "On Sale",
@@ -25,15 +25,15 @@ const navLinks = [
 const socials = [
   {
     title: "twitter",
-    url: "https://twitter.com/ui8",
+    url: "/",
   },
   {
     title: "instagram",
-    url: "https://www.instagram.com/ui8net/",
+    url: "/",
   },
   {
     title: "facebook",
-    url: "https://www.facebook.com/ui8.net/",
+    url: "/",
   },
 ];
 
@@ -189,7 +189,7 @@ const Profile = () => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div className={styles.profile}>
         <div
           className={cn(styles.head, { [styles.active]: visible })}
@@ -275,7 +275,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <Footers />
+      {/* <Footers /> */}
     </>
   );
 };

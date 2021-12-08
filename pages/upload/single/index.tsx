@@ -16,7 +16,7 @@ import { create as ipfsHttpClient } from "ipfs-http-client";
 import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
-import { db } from "../../../firbase";
+import { db } from "../../../firebase";
 import { collection, addDoc } from "firebase/firestore";
 
 const royaltiesOptions = ["10%", "20%", "30%"];
@@ -157,7 +157,7 @@ const Upload = () => {
 
   return (
     <>
-      <Headers />
+      {/* <Headers /> */}
       <div className={cn("section", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.wrapper}>
@@ -338,7 +338,7 @@ const Upload = () => {
       {/* <Modal visible={visibleModal} onClose={() => setVisibleModal(false)}>
         <FolowSteps className={styles.steps} />
       </Modal> */}
-      <Footers />
+      {/* <Footers /> */}
     </>
   );
 };

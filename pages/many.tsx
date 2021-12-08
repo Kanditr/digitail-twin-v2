@@ -1,6 +1,6 @@
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../firbase";
+import { db } from "../firebase";
 import Link from "next/link";
 
 const many = () => {

@@ -4,10 +4,9 @@ import styles from "./Item.module.sass";
 import Users from "./Users/users";
 import Control from "./Control/control";
 import Options from "./Options/options";
-import Header from "../../components/Header/header";
-import Footers from "../../components/Footer/footer";
+
 import { useRouter } from "next/router";
-import { db } from "../../firbase";
+import { db } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
 import { bids } from "../../mocks/bids";
@@ -66,7 +65,6 @@ const Item = ({ res }: any) => {
 
   return (
     <>
-      <Header />
       <div className={cn("section", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.bg}>
@@ -124,7 +122,6 @@ const Item = ({ res }: any) => {
           </div>
         </div>
       </div>
-      <Footers />
     </>
   );
 };

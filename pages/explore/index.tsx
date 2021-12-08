@@ -7,11 +7,12 @@ import Card from "../../components/Card/card";
 import Dropdown from "../../components/Dropdown/dropdown";
 import Header from "../../components/Header/header";
 import Footers from "../../components/Footer/footer";
-import { db } from "../../firbase";
+import { db } from "../../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 // data
 import { bids } from "../../mocks/bids";
+import Layout from "../../components/layout";
 
 const navLinks = ["All items", "Art", "Game", "Photography", "Music", "Video"];
 
@@ -69,7 +70,8 @@ const Search = () => {
 
   return (
     <>
-      <Header />
+      {/* <Layout> */}
+      {/* <Header /> */}
       <div className={cn("section-pt80", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.top}>
@@ -251,7 +253,8 @@ const Search = () => {
           </div>
         </div>
       </div>
-      <Footers />
+      {/* <Footers /> */}
+      {/* </Layout> */}
     </>
   );
 };

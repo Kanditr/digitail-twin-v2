@@ -4,8 +4,6 @@ import styles from "./Item.module.sass";
 import Users from "./Users/users";
 import Control from "./Control/control";
 import Options from "./Options/options";
-import Header from "../../components/Header/header";
-import Footers from "../../components/Footer/footer";
 
 const navLinks = ["Info", "Owners", "History", "Bids"];
 
@@ -39,7 +37,6 @@ const Item = () => {
 
   return (
     <>
-      <Header />
       <div className={cn("section", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.bg}>
@@ -107,7 +104,6 @@ const Item = () => {
           </div>
         </div>
       </div>
-      <Footers />
     </>
   );
 };
