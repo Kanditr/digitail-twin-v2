@@ -77,10 +77,7 @@ const User = ({ className, user }: any) => {
             <div className={styles.wrap}>
               <div className={styles.line}>
                 <div className={styles.preview}>
-                  <img
-                    src="/images/content/etherium-circle.jpg"
-                    alt="Etherium"
-                  />
+                  <img src="/images/content/matic-token.png" alt="Etherium" />
                 </div>
                 <div className={styles.details}>
                   <div className={styles.info}>Balance</div>
