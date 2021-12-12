@@ -70,6 +70,8 @@ const Headers = () => {
       console.log("No such document!");
       setUser({
         ...user,
+        profile_image: "/images/content/no-user.jpeg",
+        profile_username: "No profile",
         balance,
       });
     }
@@ -96,50 +98,13 @@ const Headers = () => {
       console.log("No such document!");
       setUser({
         ...user,
+        profile_image: "/images/content/no-user.jpeg",
+        profile_username: "No profile",
         balance,
       });
     }
     setChange(false);
   }
-
-  // const [currentAccount, setCurrentAccount] = useState("") as any;
-
-  // async function handleAccountsChanged(accounts: any) {
-  //   if (accounts[0].length === 0) {
-  //     // MetaMask is locked or the user has not connected any accounts
-  //     console.log("Please connect to MetaMask.");
-  //   } else if (accounts[0] !== currentAccount) {
-  //     // Do any other work!
-  //     setCurrentAccount(accounts[0]);
-  //     const web3 = new Web3(window.ethereum);
-  //     const inquiry = (await web3.eth.getBalance(accounts[0])) as any;
-  //     const balance = web3.utils.fromWei(inquiry, "ether");
-
-  //     const docRef = doc(db, "users", accounts[0]);
-  //     const docSnap = await getDoc(docRef);
-  //     try {
-  //       if (docSnap.exists()) {
-  //         console.log("Document data:", docSnap.data());
-  //         setUser({
-  //           ...user,
-  //           balance,
-  //           profile_username: docSnap.data().profile_username,
-  //           profile_image: docSnap.data().profile_image,
-  //         });
-  //       } else {
-  //         console.log("No such document!");
-  //         setUser({
-  //           ...user,
-  //           profile_image: "/images/content/no-user.jpeg",
-  //           profile_username: "No profile",
-  //           balance,
-  //         });
-  //       }
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   }
-  // }
 
   // load account
   if (loadAccount === true) {
@@ -174,13 +139,9 @@ const Headers = () => {
   useEffect(() => {
     // change account
     let isAccountChanged = true;
-    // const web3 = new Web3(window.ethereum);
     window.ethereum.on("accountsChanged", async (accounts: any) => {
-      // setChangeAcc(accounts);
       setChange(true);
       if (isAccountChanged === true) {
-        // handleAccountsChanged(accounts);
-        // open(accounts);
       }
     });
     return () => {
