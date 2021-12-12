@@ -30,79 +30,157 @@ const nav = [
   },
 ];
 
-const Headers = (single: any) => {
+const Headers = () => {
   const [visibleNav, setVisibleNav] = useState(false);
   const [search, setSearch] = useState("");
   const [loadAccount, setLoadAccount] = useState(true);
+  const [change, setChange] = useState(false);
+  const [changeAcc, setChangeAcc] = useState();
   const [user, setUser] = useState({
     profile_image: "/images/content/no-user.jpeg",
     profile_username: "No profile",
     balance: null,
   }) as any;
-
-  // console.log(single.single.profile_username);
+  // const [single, setSingle] = useState({}) as any;
 
   const handleSubmit = (e: void) => {
     alert();
   };
 
-  // if (Object.keys(profile.user).length === 0) {
-  //   console.log("empty");
-  // } else {
-  //   setUser({ ...user, profile_image: profile.user.image });
-  //   console.log(profile);
-  // }
-
   const { active, account, library, connector, activate, deactivate }: any =
     useWeb3React();
 
-  // const thisUser = single.single.profile_username;
-  // console.log(thisUser);
-
-  async function getUserBalance() {
+  async function getUserProfile() {
     const web3 = new Web3(window.ethereum);
     const inquiry = (await web3.eth.getBalance(account)) as any;
     const balance = web3.utils.fromWei(inquiry, "ether");
-    // console.log(thisUser);
-    setUser({
-      ...user,
-      // profile_username: thisUser,
-      balance,
-    });
 
-    // console.log(user);
+    const docRef = doc(db, "users", account);
+    const docSnap = await getDoc(docRef);
 
-    // if (Object.keys(profile.user).length === 0) {
-    //   console.log("empty");
-    // } else {
-    //   setUser({
-    //     ...user,
-    //     profile_image: profile.user.profile_image,
-    // profile_username: profile.user.profile_username,
-    // profile_username: "have profile",
-    // });
-    // console.log(profile);
-    // }
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      setUser({
+        ...user,
+        balance,
+        profile_username: docSnap.data().profile_username,
+        profile_image: docSnap.data().profile_image,
+      });
+    } else {
+      console.log("No such document!");
+      setUser({
+        ...user,
+        balance,
+      });
+    }
   }
-  // console.log(profile.user.profile_username);
+
+  async function getChangeProfile() {
+    // const accc = change;
+    const web3 = new Web3(window.ethereum);
+    const inquiry = (await web3.eth.getBalance(account)) as any;
+    const balance = web3.utils.fromWei(inquiry, "ether");
+
+    const docRef = doc(db, "users", account);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      setUser({
+        ...user,
+        balance,
+        profile_username: docSnap.data().profile_username,
+        profile_image: docSnap.data().profile_image,
+      });
+    } else {
+      console.log("No such document!");
+      setUser({
+        ...user,
+        balance,
+      });
+    }
+    setChange(false);
+  }
+
+  // const [currentAccount, setCurrentAccount] = useState("") as any;
+
+  // async function handleAccountsChanged(accounts: any) {
+  //   if (accounts[0].length === 0) {
+  //     // MetaMask is locked or the user has not connected any accounts
+  //     console.log("Please connect to MetaMask.");
+  //   } else if (accounts[0] !== currentAccount) {
+  //     // Do any other work!
+  //     setCurrentAccount(accounts[0]);
+  //     const web3 = new Web3(window.ethereum);
+  //     const inquiry = (await web3.eth.getBalance(accounts[0])) as any;
+  //     const balance = web3.utils.fromWei(inquiry, "ether");
+
+  //     const docRef = doc(db, "users", accounts[0]);
+  //     const docSnap = await getDoc(docRef);
+  //     try {
+  //       if (docSnap.exists()) {
+  //         console.log("Document data:", docSnap.data());
+  //         setUser({
+  //           ...user,
+  //           balance,
+  //           profile_username: docSnap.data().profile_username,
+  //           profile_image: docSnap.data().profile_image,
+  //         });
+  //       } else {
+  //         console.log("No such document!");
+  //         setUser({
+  //           ...user,
+  //           profile_image: "/images/content/no-user.jpeg",
+  //           profile_username: "No profile",
+  //           balance,
+  //         });
+  //       }
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   }
+  // }
 
   // load account
   if (loadAccount === true) {
     if (active === true) {
-      getUserBalance();
+      getUserProfile();
       setLoadAccount(false);
     }
   }
 
+  const [current, setCurrent] = useState(account);
+
+  // change
+  if (change === true) {
+    if (account !== current) {
+      setCurrent(account);
+      getChangeProfile().then(() => setChange(false));
+    }
+  }
+
+  // async function open(accounts: any) {
+  //   try {
+  //     const res = await fetch(`http://localhost:3000/api/${accounts}`, {
+  //       method: "GET",
+  //     });
+  //     const read = await res.json();
+  //     console.log(read);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+
   useEffect(() => {
     // change account
     let isAccountChanged = true;
-    const web3 = new Web3(window.ethereum);
+    // const web3 = new Web3(window.ethereum);
     window.ethereum.on("accountsChanged", async (accounts: any) => {
+      // setChangeAcc(accounts);
+      setChange(true);
       if (isAccountChanged === true) {
-        const inquiry = (await web3.eth.getBalance(accounts[0])) as any;
-        const balance = web3.utils.fromWei(inquiry, "ether");
-        setUser({ ...user, balance });
+        // handleAccountsChanged(accounts);
+        // open(accounts);
       }
     });
     return () => {
@@ -119,11 +197,7 @@ const Headers = (single: any) => {
         <div className={cn(styles.wrapper, { [styles.active]: visibleNav })}>
           <nav className={styles.nav}>
             {nav.map((x, index) => (
-              <Link
-                // activeClassName={styles.active}
-                href={x.url}
-                key={index}
-              >
+              <Link href={x.url} key={index}>
                 <button className={styles.link}>{x.title}</button>
               </Link>
             ))}
@@ -157,7 +231,7 @@ const Headers = (single: any) => {
           <button className={cn("button-small", styles.button)}>Upload</button>
         </Link>
         {active === true ? (
-          <User className={styles.user} user={user} single={single} />
+          <User className={styles.user} user={user} />
         ) : (
           <Link href="/connect-wallet">
             <button className={cn("button-stroke button-small", styles.button)}>
