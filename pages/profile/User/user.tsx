@@ -6,28 +6,25 @@ import Report from "../../../components/Report/report";
 import Modal from "../../../components/Modal/modal";
 import { FacebookShareButton, TwitterShareButton } from "react-share";
 // import { isStepDivisible } from "react-range/lib/utils";
-import { useWeb3React } from "@web3-react/core";
 
 const shareUrlFacebook = "/";
 const shareUrlTwitter = "/";
 
-const User = ({ className, item }: any) => {
+const User = ({ className, item, profile, wallet }: any) => {
   const [visible, setVisible] = useState(false);
   const [visibleShare, setVisibleShare] = useState(false);
   const [visibleModalReport, setVisibleModalReport] = useState(false);
 
-  const { account } = useWeb3React();
-
-  var firstAcc = account?.slice(0, 14);
-  var lastAcc = account?.slice(account.length - 4);
+  var firstAcc = wallet?.slice(0, 14);
+  var lastAcc = wallet?.slice(wallet.length - 4);
 
   return (
     <>
       <div className={cn(styles.user, className)}>
         <div className={styles.avatar}>
-          <img src="/images/content/avatar-big.jpg" alt="Avatar" />
+          <img src={profile.profile_image} alt="Avatar" />
         </div>
-        <div className={styles.name}>Enrico Cole</div>
+        <div className={styles.name}>{profile.profile_username}</div>
         {/* account */}
         <div className={styles.code}>
           <div className={styles.number}>

@@ -78,7 +78,6 @@ const Headers = () => {
   }
 
   async function getChangeProfile() {
-    // const accc = change;
     const web3 = new Web3(window.ethereum);
     const inquiry = (await web3.eth.getBalance(account)) as any;
     const balance = web3.utils.fromWei(inquiry, "ether");
@@ -123,18 +122,6 @@ const Headers = () => {
       getChangeProfile().then(() => setChange(false));
     }
   }
-
-  // async function open(accounts: any) {
-  //   try {
-  //     const res = await fetch(`http://localhost:3000/api/${accounts}`, {
-  //       method: "GET",
-  //     });
-  //     const read = await res.json();
-  //     console.log(read);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
 
   useEffect(() => {
     // change account
@@ -192,7 +179,7 @@ const Headers = () => {
           <button className={cn("button-small", styles.button)}>Upload</button>
         </Link>
         {active === true ? (
-          <User className={styles.user} user={user} />
+          <User className={styles.user} user={user} wallet={account} />
         ) : (
           <Link href="/connect-wallet">
             <button className={cn("button-stroke button-small", styles.button)}>
