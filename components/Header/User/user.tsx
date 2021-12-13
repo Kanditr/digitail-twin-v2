@@ -5,36 +5,16 @@ import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./User.module.sass";
 import Icon from "../../Icon";
 import Theme from "../../Theme";
-import { injected } from "../../wallet/connector";
+// import { injected } from "../../wallet/connector";
 import { useWeb3React } from "@web3-react/core";
+import { useRouter } from "next/router";
 
-const items = [
-  {
-    title: "My profile",
-    icon: "user",
-    url: "/profile",
-  },
-  {
-    title: "My items",
-    icon: "image",
-    url: "/item",
-  },
-  {
-    title: "Dark theme",
-    icon: "bulb",
-  },
-  {
-    title: "Disconnect",
-    icon: "exit",
-    url: "http/",
-    click: true,
-  },
-];
-
-const User = ({ className, user }: any) => {
+const User = ({ className, user, wallet }: any) => {
   const [visible, setVisible] = useState(false);
 
   const { account, deactivate } = useWeb3React();
+
+  const router = useRouter();
 
   var firstAcc = account?.slice(0, 14);
   var lastAcc = account?.slice(account.length - 4);
@@ -50,7 +30,35 @@ const User = ({ className, user }: any) => {
     }
   }
 
-  // console.log("hi " + user.profile_username);
+  const items = [
+    {
+      title: "My profile",
+      icon: "user",
+      url: `/profile/${wallet}`,
+    },
+    {
+      title: "My items",
+      icon: "image",
+      url: "/item",
+    },
+    {
+      title: "Dark theme",
+      icon: "bulb",
+    },
+    {
+      title: "Disconnect",
+      icon: "exit",
+      url: "http/",
+      click: true,
+    },
+  ];
+
+  function handlePush() {
+    router.push({
+      pathname: `/profile/${wallet}`,
+      // query: { myProfile: true },
+    });
+  }
 
   return (
     <OutsideClickHandler onOutsideClick={() => setVisible(false)}>
@@ -87,10 +95,31 @@ const User = ({ className, user }: any) => {
               <button
                 className={cn("button-stroke button-small", styles.button)}
               >
-                Manage fun on Coinbase
+                Manage fun on Metamask
               </button>
             </div>
             <div className={styles.menu}>
+              {/* <button onClick={handlePush}>
+                <div
+                  className={styles.item}
+                  onClick={() => setVisible(!visible)}
+                >
+                  <div className={styles.icon}>
+                    <Icon name="user" size="20" />
+                  </div>
+                  <div className={styles.text}>My profile</div>
+                </div>
+              </button>
+              <a
+                className={styles.item}
+                rel="noopener noreferrer"
+                onClick={disconnect}
+              >
+                <div className={styles.icon}>
+                  <Icon name="exit" size="20" />
+                </div>
+                <div className={styles.text}>Disconnect</div>
+              </a> */}
               {items.map((x, index) =>
                 x.url ? (
                   x.click === true ? (
