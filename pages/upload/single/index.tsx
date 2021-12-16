@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import cn from "classnames";
-import styles from "./UploadDetails/UploadDetails.module.sass";
-import Dropdown from "../components/Dropdown/dropdown";
-import Icon from "../components/Icon";
-import TextInput from "../components/TextInput";
-import Switch from "../components/Switch/switch";
-import Loader from "../components/Loader/loader";
-import Modal from "../components/Modal/modal";
-import Preview from "./UploadDetails/Preview/preview";
-import Cards from "./UploadDetails/Cards";
-import FolowSteps from "./UploadDetails/FolowSteps";
-import Headers from "../components/Header/header";
-import Footers from "../components/Footer/footer";
+import styles from "./UploadDetails.module.sass";
+import Dropdown from "../../../components/Dropdown/dropdown";
+import Icon from "../../../components/Icon";
+import TextInput from "../../../components/TextInput";
+import Switch from "../../../components/Switch/switch";
+// import Loader from "../components/Loader/loader";
+// import Modal from "../components/Modal/modal";
+import Preview from "./Preview/preview";
+import Cards from "./Cards";
+// import FolowSteps from "./UploadDetails/FolowSteps";
+import Headers from "../../../components/Header/header";
+import Footers from "../../../components/Footer/footer";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
+import { db } from "../../../firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 const royaltiesOptions = ["10%", "20%", "30%"];
 
@@ -44,8 +46,8 @@ const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0" as any);
 const nftaddress = process.env.NEXT_PUBLIC_NFT_ADDRESS;
 const nftmarketaddress = process.env.NEXT_PUBLIC_NFT_MARKET_ADDRESS;
 
-import NFT from "../artifacts/contracts/NFT.sol/NFT.json";
-import Market from "../artifacts/contracts/NFTMarket.sol/NFTMarket.json";
+import NFT from "../../../artifacts/contracts/NFT.sol/NFT.json";
+import Market from "../../../artifacts/contracts/NFTMarket.sol/NFTMarket.json";
 
 const Upload = () => {
   // royalty
@@ -110,6 +112,7 @@ const Upload = () => {
     const provider = new ethers.providers.Web3Provider(connection);
     const signer = provider.getSigner();
 
+    // createToken - mint Token
     let contract = new ethers.Contract(nftaddress as string, NFT.abi, signer);
     let transaction = await contract.createToken(url);
     let tx = await transaction.wait();
@@ -120,6 +123,7 @@ const Upload = () => {
 
     const price = ethers.utils.parseUnits(formInput.price, "ether");
 
+    // createMarketItem - put on sale
     contract = new ethers.Contract(
       nftmarketaddress as string,
       Market.abi,
@@ -132,12 +136,28 @@ const Upload = () => {
       value: listingPrice,
     });
     await transaction.wait();
-    router.push("/");
+
+    // add data to firestore
+    try {
+      const docRef = await addDoc(collection(db, "items"), {
+        price: formInput.price,
+        name: formInput.name,
+        description: formInput.description,
+        item_url: url,
+        file_url: fileUrl,
+        tokenId: tokenId,
+        isSold: false,
+      });
+      console.log("Document written with ID: ", docRef.id);
+      router.push(`/item/${docRef.id}`);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   }
 
   return (
     <>
-      <Headers />
+      {/* <Headers /> */}
       <div className={cn("section", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.wrapper}>
@@ -318,7 +338,7 @@ const Upload = () => {
       {/* <Modal visible={visibleModal} onClose={() => setVisibleModal(false)}>
         <FolowSteps className={styles.steps} />
       </Modal> */}
-      <Footers />
+      {/* <Footers /> */}
     </>
   );
 };

@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import cn from "classnames";
-import styles from "./Explore/Explore.module.sass";
+import styles from "./Explore.module.sass";
 import { Range, getTrackBackground } from "react-range";
-import Icon from "../components/Icon";
-import Card from "../components/Card/card";
-import Dropdown from "../components/Dropdown/dropdown";
-import Header from "../components/Header/header";
-import Footers from "../components/Footer/footer";
+import Icon from "../../components/Icon";
+import Card from "../../components/Card/card";
+import Dropdown from "../../components/Dropdown/dropdown";
+import Header from "../../components/Header/header";
+import Footers from "../../components/Footer/footer";
+import { db } from "../../firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 // data
-import { bids } from "../mocks/bids";
+import { bids } from "../../mocks/bids";
+import Layout from "../../components/layout";
 
 const navLinks = ["All items", "Art", "Game", "Photography", "Music", "Video"];
 
@@ -34,12 +37,41 @@ const Search = () => {
   };
 
   const STEP = 0.1;
-  const MIN = 0.01;
+  const MIN = 0.0;
   const MAX = 10;
+
+  // get items from firestore
+  const [items, setItems] = useState([]) as any[];
+  const [filtered, setFiltered] = useState([]) as any[];
+
+  useEffect(() => {
+    getItems();
+  }, []);
+
+  const getItems = async () => {
+    // do not show sold item in explore page - TBC logic
+    // const q = query(collection(db, "items"), where("isSold", "==", false));
+    const q = query(collection(db, "items"));
+
+    const querySnapshot = await getDocs(q);
+    const items = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setItems(items);
+    console.log(items);
+  };
+
+  // filter on click nav
+  function filter(nav: any) {
+    var filtered = items.filter((e: any) => e.category === nav);
+    nav === "All items" ? setFiltered(items) : setFiltered(filtered);
+  }
 
   return (
     <>
-      <Header />
+      {/* <Layout> */}
+      {/* <Header /> */}
       <div className={cn("section-pt80", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.top}>
@@ -70,18 +102,22 @@ const Search = () => {
                 value={date}
                 setValue={setDate}
                 options={dateOptions}
+                fx={function () {}}
               />
             </div>
             <div className={styles.nav}>
-              {navLinks.map((x, index) => (
+              {navLinks.map((nav, index) => (
                 <button
                   className={cn(styles.link, {
                     [styles.active]: index === activeIndex,
                   })}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => {
+                    setActiveIndex(index);
+                    filter(nav);
+                  }}
                   key={index}
                 >
-                  {x}
+                  {nav}
                 </button>
               ))}
             </div>
@@ -173,6 +209,7 @@ const Search = () => {
                     value={likes}
                     setValue={setLikes}
                     options={likesOptions}
+                    fx={function () {}}
                   />
                 </div>
                 <div className={styles.item}>
@@ -182,6 +219,7 @@ const Search = () => {
                     value={color}
                     setValue={setColor}
                     options={colorOptions}
+                    fx={function () {}}
                   />
                 </div>
                 <div className={styles.item}>
@@ -191,6 +229,7 @@ const Search = () => {
                     value={creator}
                     setValue={setCreator}
                     options={creatorOptions}
+                    fx={function () {}}
                   />
                 </div>
               </div>
@@ -201,7 +240,7 @@ const Search = () => {
             </div>
             <div className={styles.wrapper}>
               <div className={styles.list}>
-                {bids.map((x, index) => (
+                {filtered.map((x: any, index: any) => (
                   <Card className={styles.card} item={x} key={index} />
                 ))}
               </div>
@@ -214,7 +253,8 @@ const Search = () => {
           </div>
         </div>
       </div>
-      <Footers />
+      {/* <Footers /> */}
+      {/* </Layout> */}
     </>
   );
 };

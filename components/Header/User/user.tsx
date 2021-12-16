@@ -5,40 +5,22 @@ import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./User.module.sass";
 import Icon from "../../Icon";
 import Theme from "../../Theme";
-import { injected } from "../../wallet/connector";
+// import { injected } from "../../wallet/connector";
 import { useWeb3React } from "@web3-react/core";
+import { useRouter } from "next/router";
 
-const items = [
-  {
-    title: "My profile",
-    icon: "user",
-    url: "/profile",
-  },
-  {
-    title: "My items",
-    icon: "image",
-    url: "/item",
-  },
-  {
-    title: "Dark theme",
-    icon: "bulb",
-  },
-  {
-    title: "Disconnect",
-    icon: "exit",
-    url: "http/",
-    click: true,
-  },
-];
-
-const User = ({ className }: any) => {
+const User = ({ className, user, wallet }: any) => {
   const [visible, setVisible] = useState(false);
 
-  const { active, account, library, connector, activate, deactivate } =
-    useWeb3React();
+  const { account, deactivate } = useWeb3React();
+
+  const router = useRouter();
 
   var firstAcc = account?.slice(0, 14);
   var lastAcc = account?.slice(account.length - 4);
+
+  var userBalance = user.balance?.slice(0, 7);
+  var userBalanceFour = user.balance?.slice(0, 5);
 
   async function disconnect() {
     try {
@@ -48,20 +30,50 @@ const User = ({ className }: any) => {
     }
   }
 
+  const items = [
+    {
+      title: "My profile",
+      icon: "user",
+      url: `/profile/${wallet}`,
+    },
+    {
+      title: "My items",
+      icon: "image",
+      url: "/item",
+    },
+    {
+      title: "Dark theme",
+      icon: "bulb",
+    },
+    {
+      title: "Disconnect",
+      icon: "exit",
+      url: "http/",
+      click: true,
+    },
+  ];
+
+  function handlePush() {
+    router.push({
+      pathname: `/profile/${wallet}`,
+      // query: { myProfile: true },
+    });
+  }
+
   return (
     <OutsideClickHandler onOutsideClick={() => setVisible(false)}>
       <div className={cn(styles.user, className)}>
         <div className={styles.head} onClick={() => setVisible(!visible)}>
           <div className={styles.avatar}>
-            <img src="/images/content/avatar-user.jpg" alt="Avatar" />
+            <img src={user.profile_image} alt="Avatar" />
           </div>
           <div className={styles.wallet}>
-            7.00698 <span className={styles.currency}>ETH</span>
+            {userBalance} <span className={styles.currency}>MATIC</span>
           </div>
         </div>
         {visible && (
           <div className={styles.body}>
-            <div className={styles.name}>Enrico Cole</div>
+            <div className={styles.name}>{user.profile_username}</div>
             <div className={styles.code}>
               <div className={styles.number}>
                 {firstAcc}...{lastAcc}
@@ -73,23 +85,41 @@ const User = ({ className }: any) => {
             <div className={styles.wrap}>
               <div className={styles.line}>
                 <div className={styles.preview}>
-                  <img
-                    src="/images/content/etherium-circle.jpg"
-                    alt="Etherium"
-                  />
+                  <img src="/images/content/matic-token.png" alt="Etherium" />
                 </div>
                 <div className={styles.details}>
                   <div className={styles.info}>Balance</div>
-                  <div className={styles.price}>4.689 ETH</div>
+                  <div className={styles.price}>{userBalanceFour} MATIC</div>
                 </div>
               </div>
               <button
                 className={cn("button-stroke button-small", styles.button)}
               >
-                Manage fun on Coinbase
+                Manage fun on Metamask
               </button>
             </div>
             <div className={styles.menu}>
+              {/* <button onClick={handlePush}>
+                <div
+                  className={styles.item}
+                  onClick={() => setVisible(!visible)}
+                >
+                  <div className={styles.icon}>
+                    <Icon name="user" size="20" />
+                  </div>
+                  <div className={styles.text}>My profile</div>
+                </div>
+              </button>
+              <a
+                className={styles.item}
+                rel="noopener noreferrer"
+                onClick={disconnect}
+              >
+                <div className={styles.icon}>
+                  <Icon name="exit" size="20" />
+                </div>
+                <div className={styles.text}>Disconnect</div>
+              </a> */}
               {items.map((x, index) =>
                 x.url ? (
                   x.click === true ? (

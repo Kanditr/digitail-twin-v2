@@ -8,13 +8,10 @@ import Popular from "./Home/Popular/popular";
 // import Collections from "./Home/Collections/index";
 import Discover from "./Home/Discover/discover";
 // import Description from "./Home/Description/index";
-import Header from "../components/Header/header";
-import Footer from "../components/Footer/footer";
 
 const Home: NextPage = () => {
   return (
     <>
-      <Header />
       <Hero />
       <Selection />
       <Popular />
@@ -23,7 +20,6 @@ const Home: NextPage = () => {
       <Discover />
       {/* <Description /> */}
       {/* <Modal /> */}
-      <Footer />
     </>
   );
 };

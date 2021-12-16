@@ -4,14 +4,14 @@ import Link from "next/link";
 import styles from "./Control.module.sass";
 import Icon from "../Icon";
 
-const Control = ({ className, item }: any) => {
+const Control = ({ className, item, control }: any) => {
   return (
     <div className={cn(styles.control, className)}>
       <div className={cn("container", styles.container)}>
-        <Link href="/">
+        <Link href={control.url}>
           <button className={cn("button-stroke button-small", styles.button)}>
             <Icon name="arrow-prev" size="10" />
-            <span>Back to home</span>
+            <span>{control.title}</span>
           </button>
         </Link>
         <div className={styles.breadcrumbs}>

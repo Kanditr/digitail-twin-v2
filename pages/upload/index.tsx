@@ -2,10 +2,10 @@ import React from "react";
 import Link from "next/link";
 import cn from "classnames";
 // import styles from "./UploadVariants.module.sass";
-import styles from "./UploadVariants/UploadVariants.module.sass";
-import Control from "../components/Control/control";
-import Footers from "../components/Footer/footer";
-import Headers from "../components/Header/header";
+import styles from "./UploadVariants.module.sass";
+import Control from "../../components/Control/control";
+import Footers from "../../components/Footer/footer";
+import Headers from "../../components/Header/header";
 
 const breadcrumbs = [
   {
@@ -17,15 +17,20 @@ const breadcrumbs = [
   },
 ];
 
+const control = {
+  title: "Back to home",
+  url: "/",
+};
+
 const items = [
   {
-    url: "/upload-details",
+    url: "/upload/single",
     buttonText: "Create Single",
     image: "/images/content/upload-pic-1.jpg",
     image2x: "/images/content/upload-pic-1@2x.jpg",
   },
   {
-    url: "/upload-details",
+    url: "/upload/single",
     buttonText: "Create Multiple",
     image: "/images/content/upload-pic-2.jpg",
     image2x: "/images/content/upload-pic-2@2x.jpg",
@@ -36,9 +41,13 @@ const Upload = () => {
   return (
     // page
     <>
-      <Headers />
+      {/* <Headers /> */}
       <div className={styles.page}>
-        <Control className={styles.control} item={breadcrumbs} />
+        <Control
+          className={styles.control}
+          item={breadcrumbs}
+          control={control}
+        />
         <div className={cn("section-pt80", styles.section)}>
           <div className={cn("container", styles.container)}>
             <div className={styles.top}>
@@ -74,7 +83,7 @@ const Upload = () => {
           </div>
         </div>
       </div>
-      <Footers />
+      {/* <Footers /> */}
     </>
   );
 };

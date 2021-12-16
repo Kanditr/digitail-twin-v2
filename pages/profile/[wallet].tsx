@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import cn from "classnames";
 import Link from "next/link";
-import styles from "./Profile/Profile.module.sass";
-import Icon from "../components/Icon";
-import User from "./Profile/User/user";
-import Items from "./Profile/Items/items";
-import Followers from "./Profile/Followers/followers";
-import Header from "../components/Header/header";
+import styles from "./Profile.module.sass";
+import Icon from "../../components/Icon";
+import User from "./User/user";
+import Items from "./Items/items";
+import Followers from "./Followers/followers";
+import { useRouter } from "next/router";
+import { useWeb3React } from "@web3-react/core";
 
 // data
-import { bids } from "../mocks/bids";
+import { bids } from "../../mocks/bids";
 import { isStepDivisible } from "react-range/lib/utils";
-import Footers from "../components/Footer/footer";
 
 const navLinks = [
   "On Sale",
@@ -25,15 +25,15 @@ const navLinks = [
 const socials = [
   {
     title: "twitter",
-    url: "https://twitter.com/ui8",
+    url: "/",
   },
   {
     title: "instagram",
-    url: "https://www.instagram.com/ui8net/",
+    url: "/",
   },
   {
     title: "facebook",
-    url: "https://www.facebook.com/ui8.net/",
+    url: "/",
   },
 ];
 
@@ -186,10 +186,32 @@ const followers = [
 const Profile = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [visible, setVisible] = useState(false);
+  const [profile, setProfile] = useState({}) as any;
+  const [loading, setLoading] = useState(true);
+  const [currentWallet, setCurrentWallet] = useState() as any;
+
+  const router = useRouter();
+
+  async function getProfile(wallet: any) {
+    try {
+      const res = await fetch(`http://localhost:3000/api/${wallet}`, {
+        method: "GET",
+      });
+      const profileObject = await res.json();
+      setProfile(profileObject);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    const { wallet } = router.query;
+    getProfile(wallet);
+    setCurrentWallet(wallet);
+  }, [router.asPath]);
 
   return (
     <>
-      <Header />
       <div className={styles.profile}>
         <div
           className={cn(styles.head, { [styles.active]: visible })}
@@ -234,7 +256,12 @@ const Profile = () => {
         {/* body */}
         <div className={styles.body}>
           <div className={cn("container", styles.container)}>
-            <User className={styles.user} item={socials} />
+            <User
+              className={styles.user}
+              item={socials}
+              profile={profile}
+              wallet={currentWallet}
+            />
             <div className={styles.wrapper}>
               <div className={styles.nav}>
                 {navLinks.map((x, index) => (
@@ -275,7 +302,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <Footers />
     </>
   );
 };
