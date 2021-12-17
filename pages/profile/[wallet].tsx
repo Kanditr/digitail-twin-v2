@@ -194,9 +194,12 @@ const Profile = () => {
 
   async function getProfile(wallet: any) {
     try {
-      const res = await fetch(`http://localhost:3000/api/${wallet}`, {
-        method: "GET",
-      });
+      const res = await fetch(
+        `http://digital-twin-staging.herokuapp.com/api/${wallet}`,
+        {
+          method: "GET",
+        }
+      );
       const profileObject = await res.json();
       setProfile(profileObject);
     } catch (err) {

@@ -95,7 +95,7 @@ const Item = ({ res }: any) => {
             <h1 className={cn("h3", styles.title)}>{single.name}</h1>
             <div className={styles.cost}>
               <div className={cn("status-stroke-green", styles.price)}>
-                {single.price} Matic
+                {single.price || ""} Matic
               </div>
               <div className={cn("status-stroke-black", styles.price)}>
                 $4,429.87
