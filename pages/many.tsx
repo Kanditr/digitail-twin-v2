@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { db } from "../firebase";
 import Link from "next/link";
 
-const many = () => {
+const Many = () => {
   const [many, setMany] = useState([]) as any[];
 
   useEffect(() => {
@@ -35,4 +35,4 @@ const many = () => {
   );
 };
 
-export default many;
+export default Many;
