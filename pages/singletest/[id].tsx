@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { db, app } from "../../firebase";
 
-const single = (props: any) => {
+const Single = (props: any) => {
   const [single, setSingle] = useState({}) as any;
 
   const router = useRouter();
@@ -39,4 +39,4 @@ const single = (props: any) => {
   );
 };
 
-export default single;
+export default Single;

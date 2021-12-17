@@ -2,7 +2,7 @@ import { collection, addDoc, getDocs, doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db, app } from "../firebase";
 
-const firebase = () => {
+const Firebase = () => {
   const [single, setSingle] = useState({}) as any;
 
   useEffect(() => {
@@ -33,4 +33,4 @@ const firebase = () => {
   );
 };
 
-export default firebase;
+export default Firebase;
