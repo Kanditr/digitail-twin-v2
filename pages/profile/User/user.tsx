@@ -5,6 +5,7 @@ import Icon from "../../../components/Icon";
 import Report from "../../../components/Report/report";
 import Modal from "../../../components/Modal/modal";
 import { FacebookShareButton, TwitterShareButton } from "react-share";
+import Link from "next/link";
 // import { isStepDivisible } from "react-range/lib/utils";
 
 const shareUrlFacebook = "/";
@@ -38,15 +39,16 @@ const User = ({ className, item, profile, wallet }: any) => {
           A wholesome farm owner in Montana. Upcoming gallery solo show in
           Germany
         </div>
-        <a
-          className={styles.site}
+        <Link
           href="/"
-          target="_blank"
-          rel="noopener noreferrer"
+          // target="_blank"
+          // rel="noopener noreferrer"
         >
-          <Icon name="globe" size="16" />
-          <span>https://localhost:3000/</span>
-        </a>
+          <div className={styles.site}>
+            <Icon name="globe" size="16" />
+            <span>https://localhost:3000/</span>
+          </div>
+        </Link>
         <div className={styles.control}>
           <div className={styles.btns}>
             {/* follow */}
@@ -105,15 +107,15 @@ const User = ({ className, item, profile, wallet }: any) => {
         {/* social */}
         <div className={styles.socials}>
           {(item || []).map((x: any, index: any) => (
-            <a
-              className={styles.social}
-              href={x.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              key={index}
-            >
-              <Icon name={x.title} size="20" />
-            </a>
+            // <a
+            //   className={styles.social}
+            //   href={x.url}
+            //   target="_blank"
+            //   rel="noopener noreferrer"
+            //   key={index}
+            // >
+            <Icon name={x.title} size="20" />
+            // </a>
           ))}
         </div>
         <div className={styles.note}>Member since Mar 15, 2021</div>

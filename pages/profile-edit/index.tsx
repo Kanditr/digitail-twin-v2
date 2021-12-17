@@ -146,7 +146,7 @@ const ProfileEdit = () => {
                 </div>
                 <div className={styles.note}>
                   To update your settings you should sign message through your
-                  wallet. Click 'Update profile' then sign the message
+                  wallet. Click &#39;Update profile&#39; then sign the message
                 </div>
                 <div className={styles.btns}>
                   <button className={cn("button", styles.button)}>
