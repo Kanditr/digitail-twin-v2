@@ -114,7 +114,7 @@ const User = ({ className, item, profile, wallet }: any) => {
             //   rel="noopener noreferrer"
             //   key={index}
             // >
-            <Icon name={x.title} size="20" />
+            <Icon name={x.title} size="20" key={index} />
             // </a>
           ))}
         </div>
