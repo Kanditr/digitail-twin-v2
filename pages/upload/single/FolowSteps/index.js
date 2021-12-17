@@ -2,8 +2,8 @@ import React from "react";
 import cn from "classnames";
 import styles from "./FolowSteps.module.sass";
 import Icon from "../../../../components/Icon";
-import Loader from "../../../components/Loader/loader";
-import LoaderCircle from "../../../components/LoaderCircle";
+import Loader from "../../../../components/Loader/loader";
+import LoaderCircle from "../../../../components/LoaderCircle";
 import Link from "next/link";
 
 const FolowSteps = ({ className }) => {
