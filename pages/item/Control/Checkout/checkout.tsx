@@ -16,7 +16,7 @@ import Market from "../../../../artifacts/contracts/NFTMarket.sol/NFTMarket.json
 const Checkout = ({ className, item, id }: any) => {
   const items = [
     {
-      title: `${item.price}`,
+      title: `${item.price || null}`,
       value: "MATIC",
     },
     {
@@ -29,7 +29,7 @@ const Checkout = ({ className, item, id }: any) => {
     },
     {
       title: "You will pay",
-      value: `${item.price}` + " MATIC",
+      value: `${item.price || null}` + " MATIC",
     },
   ];
 
