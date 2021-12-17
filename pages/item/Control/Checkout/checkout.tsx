@@ -16,7 +16,7 @@ import Market from "../../../../artifacts/contracts/NFTMarket.sol/NFTMarket.json
 const Checkout = ({ className, item, id }: any) => {
   const items = [
     {
-      title: `${item.price || null}`,
+      title: `${item.price || ""}`,
       value: "MATIC",
     },
     {
@@ -29,7 +29,7 @@ const Checkout = ({ className, item, id }: any) => {
     },
     {
       title: "You will pay",
-      value: `${item.price || null}` + " MATIC",
+      value: `${item.price || ""}` + " MATIC",
     },
   ];
 
@@ -59,7 +59,7 @@ const Checkout = ({ className, item, id }: any) => {
       process.env.NEXT_PUBLIC_NFT_ADDRESS as string,
       item.tokenId,
       {
-        value: price,
+        value: price || "",
       }
     );
     await transaction.wait();
