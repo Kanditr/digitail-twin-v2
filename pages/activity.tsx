@@ -86,6 +86,11 @@ const filters = [
   "Transfers",
 ];
 
+const control = {
+  title: "Back to profile",
+  url: "/profile",
+};
+
 const navLinks = ["My activity", "Following", "All activity"];
 
 const Activity = () => {
@@ -96,7 +101,11 @@ const Activity = () => {
   return (
     <>
       <div className={styles.page}>
-        <Control className={styles.control} item={breadcrumbs} />
+        <Control
+          className={styles.control}
+          item={breadcrumbs}
+          control={control}
+        />
         <div className={cn("section-pt80", styles.body)}>
           <div className={cn("container", styles.container)}>
             <div className={styles.top}>
