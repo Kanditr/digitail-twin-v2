@@ -25,7 +25,7 @@ const User = ({ className, item, profile, wallet }: any) => {
         <div className={styles.avatar}>
           <img src={profile?.profile_image} alt="Avatar" />
         </div>
-        <div className={styles.name}>{profile.profile_username}</div>
+        <div className={styles.name}>{profile?.profile_username}</div>
         {/* account */}
         <div className={styles.code}>
           <div className={styles.number}>
