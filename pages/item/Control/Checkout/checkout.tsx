@@ -88,7 +88,7 @@ const Checkout = ({ className, item, id }: any) => {
             {items.map((x, index) => (
               <div className={styles.row} key={index}>
                 <div className={styles.col}>{x.title}</div>
-                <div className={styles.col}>{x.value}</div>
+                <div className={styles.col}>{x?.value || ""}</div>
               </div>
             ))}
           </div>
