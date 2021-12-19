@@ -23,7 +23,11 @@ const User = ({ className, item, profile, wallet }: any) => {
     <>
       <div className={cn(styles.user, className)}>
         <div className={styles.avatar}>
-          <img src={profile?.profile_image} alt="Avatar" />
+          {profile?.profile_image ? (
+            <img src={profile?.profile_image} alt="Avatar" />
+          ) : (
+            <img src="/images/content/no-user.jpeg" alt="Avatar" />
+          )}
         </div>
         <div className={styles.name}>{profile?.profile_username}</div>
         {/* account */}
@@ -35,10 +39,7 @@ const User = ({ className, item, profile, wallet }: any) => {
             <Icon name="copy" size="16" />
           </button>
         </div>
-        <div className={styles.info}>
-          A wholesome farm owner in Montana. Upcoming gallery solo show in
-          Germany
-        </div>
+        <div className={styles.info}>{profile?.profile_bio}</div>
         <Link
           href="/"
           // target="_blank"
@@ -113,8 +114,9 @@ const User = ({ className, item, profile, wallet }: any) => {
             //   target="_blank"
             //   rel="noopener noreferrer"
             //   key={index}
-            // >
-            <Icon name={x.title} size="20" key={index} />
+            <div className={styles.social} key={index}>
+              <Icon name={x.title} size="20" key={index} />
+            </div>
             // </a>
           ))}
         </div>

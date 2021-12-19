@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import cn from "classnames";
 import styles from "./ProfileEdit.module.sass";
-import Control from "../../components/Control/control";
-import TextInput from "../../components/TextInput";
-import TextArea from "../../components/TextArea";
-import Icon from "../../components/Icon";
+import Control from "../../../../components/Control/control";
+import TextInput from "../../../../components/TextInput";
+import TextArea from "../../../../components/TextArea";
+import Icon from "../../../../components/Icon";
+import { useRouter } from "next/router";
 
 const breadcrumbs = [
   {
@@ -21,20 +22,69 @@ const breadcrumbs = [
   },
 ];
 
-const control = {
-  title: "Back to profile",
-  url: "/profile",
-};
-
 const ProfileEdit = () => {
+  const router = useRouter();
+  const { wallet } = router.query;
+
+  const [profile, setProfile] = useState({}) as any;
+
+  async function getProfile(wallet: any) {
+    try {
+      const res = await fetch(`/api/profile/${wallet}`, {
+        method: "GET",
+      });
+      const profileObject = await res.json();
+      if (profileObject.message === "No document!") {
+        console.log(profileObject.message);
+        setProfile({
+          profile_username: "",
+          profile_bio: "",
+        });
+      } else {
+        setProfile(profileObject);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function updateProfile(wallet: any) {
+    try {
+      const res = await fetch(`/api/profile/${wallet}`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(profile),
+      });
+      const message = await res.json();
+      console.log(message.status);
+      if (message.status === "update success!") {
+        router.back();
+      } else {
+        console.log("update fail");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    getProfile(wallet);
+    console.log(profile);
+  }, [router.isReady]);
+
+  function handleSubmit() {
+    updateProfile(wallet);
+    console.log("submit profile update request");
+  }
+
   return (
     <>
       <div className={styles.page}>
-        <Control
-          className={styles.control}
-          item={breadcrumbs}
-          control={control}
-        />
+        <Control className={styles.control} item={breadcrumbs} />
         <div className={cn("section-pt80", styles.section)}>
           <div className={cn("container", styles.container)}>
             <div className={styles.top}>
@@ -49,7 +99,11 @@ const ProfileEdit = () => {
               <div className={styles.col}>
                 <div className={styles.user}>
                   <div className={styles.avatar}>
-                    <img src="/images/content/avatar-1.jpg" alt="Avatar" />
+                    {profile.profile_image ? (
+                      <img src={profile.profile_image} alt="Avatar" />
+                    ) : (
+                      <img src="/images/content/no-user.jpeg" alt="Avatar" />
+                    )}
                   </div>
                   <div className={styles.details}>
                     <div className={styles.stage}>Profile photo</div>
@@ -84,22 +138,37 @@ const ProfileEdit = () => {
                         name="Name"
                         type="text"
                         placeholder="Enter your display name"
-                        required
+                        value={profile?.profile_username || ""}
+                        onChange={(value: any) => {
+                          setProfile({
+                            ...profile,
+                            profile_username: value.target.value,
+                          });
+                        }}
+                        // required
                       />
                       <TextInput
                         className={styles.field}
                         label="Custom url"
                         name="Url"
                         type="text"
-                        placeholder="Your custom URL"
-                        required
+                        placeholder={"Your custom URL"}
+                        // required
                       />
                       <TextArea
                         className={styles.field}
                         label="Bio"
                         name="Bio"
+                        type="text"
                         placeholder="About yourselt in a few words"
-                        required="required"
+                        value={profile?.profile_bio || ""}
+                        onChange={(value: any) => {
+                          setProfile({
+                            ...profile,
+                            profile_bio: value.target.value,
+                          });
+                        }}
+                        // required="required"
                       />
                     </div>
                   </div>
@@ -112,7 +181,7 @@ const ProfileEdit = () => {
                         name="Portfolio"
                         type="text"
                         placeholder="Enter URL"
-                        required
+                        // required
                       />
                       <div className={styles.box}>
                         <TextInput
@@ -121,7 +190,7 @@ const ProfileEdit = () => {
                           name="Twitter"
                           type="text"
                           placeholder="@twitter username"
-                          required
+                          // required
                         />
                         <button
                           className={cn(
@@ -149,10 +218,22 @@ const ProfileEdit = () => {
                   wallet. Click &#39;Update profile&#39; then sign the message
                 </div>
                 <div className={styles.btns}>
-                  <button className={cn("button", styles.button)}>
+                  <button
+                    className={cn("button", styles.button)}
+                    onClick={handleSubmit}
+                  >
                     Update Profile
                   </button>
-                  <button className={styles.clear}>
+                  <button
+                    className={styles.clear}
+                    onClick={() => {
+                      setProfile({
+                        ...profile,
+                        profile_username: "",
+                        profile_bio: "",
+                      });
+                    }}
+                  >
                     <Icon name="circle-close" size="24" />
                     Clear all
                   </button>

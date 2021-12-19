@@ -35,13 +35,11 @@ const Headers = () => {
   const [search, setSearch] = useState("");
   const [loadAccount, setLoadAccount] = useState(true);
   const [change, setChange] = useState(false);
-  const [changeAcc, setChangeAcc] = useState();
   const [user, setUser] = useState({
     profile_image: "/images/content/no-user.jpeg",
     profile_username: "No profile",
     balance: null,
   }) as any;
-  // const [single, setSingle] = useState({}) as any;
 
   const handleSubmit = (e: void) => {
     alert();
@@ -151,7 +149,12 @@ const Headers = () => {
           <nav className={styles.nav}>
             {nav.map((x, index) => (
               <Link href={x.url} key={index}>
-                <button className={styles.link}>{x.title}</button>
+                <button
+                  className={styles.link}
+                  onClick={() => setVisibleNav(false)}
+                >
+                  {x.title}
+                </button>
               </Link>
             ))}
           </nav>

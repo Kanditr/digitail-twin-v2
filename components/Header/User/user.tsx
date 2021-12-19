@@ -65,7 +65,11 @@ const User = ({ className, user, wallet }: any) => {
       <div className={cn(styles.user, className)}>
         <div className={styles.head} onClick={() => setVisible(!visible)}>
           <div className={styles.avatar}>
-            <img src={user.profile_image} alt="Avatar" />
+            {user.profile_image ? (
+              <img src={user.profile_image} alt="Avatar" />
+            ) : (
+              <img src="/images/content/no-user.jpeg" alt="Avatar" />
+            )}
           </div>
           <div className={styles.wallet}>
             {userBalance} <span className={styles.currency}>MATIC</span>
