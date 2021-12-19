@@ -24,6 +24,7 @@ export default async function profileHandler(
         var message: any = "No document!";
         var profile_username: any = "No profile";
         var profile_image: any = "/images/content/no-user.jpeg";
+        var profile_bio: any = "";
       }
 
       res.status(200).json({
