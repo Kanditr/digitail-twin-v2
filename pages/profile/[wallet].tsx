@@ -191,10 +191,11 @@ const Profile = () => {
   const [currentWallet, setCurrentWallet] = useState() as any;
 
   const router = useRouter();
+  const { wallet } = router.query;
 
   async function getProfile(wallet: any) {
     try {
-      const res = await fetch(`/api/${wallet}`, {
+      const res = await fetch(`/api/profile/${wallet}`, {
         method: "GET",
       });
       const profileObject = await res.json();
@@ -228,7 +229,7 @@ const Profile = () => {
                 <span>Edit cover photo</span>
                 <Icon name="edit" size="16" />
               </button>
-              <Link href="profile-edit">
+              <Link href={`/profile/${wallet}/profile-edit`}>
                 <button
                   className={cn("button-stroke button-small", styles.button)}
                 >
