@@ -23,7 +23,7 @@ const User = ({ className, item, profile, wallet }: any) => {
     <>
       <div className={cn(styles.user, className)}>
         <div className={styles.avatar}>
-          {profile.profile_image ? (
+          {profile?.profile_image ? (
             <img src={profile?.profile_image} alt="Avatar" />
           ) : (
             <img src="/images/content/no-user.jpeg" alt="Avatar" />
