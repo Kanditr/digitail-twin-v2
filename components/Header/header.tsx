@@ -126,11 +126,16 @@ const Headers = () => {
   useEffect(() => {
     // change account
     let isAccountChanged = true;
-    window.ethereum.on("accountsChanged", async (accounts: any) => {
-      setChange(true);
-      if (isAccountChanged === true) {
-      }
-    });
+    if (
+      typeof window.ethereum !== "undefined" ||
+      typeof window.web3 !== "undefined"
+    ) {
+      window.ethereum.on("accountsChanged", async (accounts: any) => {
+        setChange(true);
+        if (isAccountChanged === true) {
+        }
+      });
+    }
     return () => {
       isAccountChanged = false;
     };
