@@ -80,13 +80,16 @@ const Discover = () => {
 
   // get items from firestore
   const getItems = async () => {
-    const querySnapshot = await getDocs(collection(db, "items"));
-    const items = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setItems(items);
-    setFiltered(items);
+    try {
+      const res = await fetch(`/api/items`, {
+        method: "GET",
+      });
+      const items = await res.json();
+      setItems(items);
+      setFiltered(items);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // filter on click nav
