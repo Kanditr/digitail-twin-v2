@@ -40,6 +40,8 @@ const Headers = () => {
     profile_username: "No profile",
     balance: null,
   }) as any;
+  const [profile, setProfile] = useState({}) as any;
+  const [balance, setBalance] = useState("") as any;
 
   const handleSubmit = (e: void) => {
     alert();
@@ -48,65 +50,38 @@ const Headers = () => {
   const { active, account, library, connector, activate, deactivate }: any =
     useWeb3React();
 
-  async function getUserProfile() {
+  async function getBalance() {
     const web3 = new Web3(window.ethereum);
     const inquiry = (await web3.eth.getBalance(account)) as any;
     const balance = web3.utils.fromWei(inquiry, "ether");
 
-    const docRef = doc(db, "users", account);
-    const docSnap = await getDoc(docRef);
+    setBalance(balance);
+  }
 
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      setUser({
-        ...user,
-        balance,
-        profile_username: docSnap.data().profile_username,
-        profile_image: docSnap.data().profile_image,
+  async function getProfile(wallet: any) {
+    try {
+      const res = await fetch(`/api/profile/${wallet}`, {
+        method: "GET",
       });
-    } else {
-      console.log("No such document!");
-      setUser({
-        ...user,
-        profile_image: "/images/content/no-user.jpeg",
-        profile_username: "No profile",
-        balance,
-      });
+      const profileObject = await res.json();
+      setProfile(profileObject);
+    } catch (err) {
+      console.log(err);
     }
   }
 
-  async function getChangeProfile() {
-    const web3 = new Web3(window.ethereum);
-    const inquiry = (await web3.eth.getBalance(account)) as any;
-    const balance = web3.utils.fromWei(inquiry, "ether");
+  async function getChangeProfile(account: any) {
+    getBalance();
+    getProfile(account);
 
-    const docRef = doc(db, "users", account);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-      setUser({
-        ...user,
-        balance,
-        profile_username: docSnap.data().profile_username,
-        profile_image: docSnap.data().profile_image,
-      });
-    } else {
-      console.log("No such document!");
-      setUser({
-        ...user,
-        profile_image: "/images/content/no-user.jpeg",
-        profile_username: "No profile",
-        balance,
-      });
-    }
     setChange(false);
   }
 
   // load account
   if (loadAccount === true) {
     if (active === true) {
-      getUserProfile();
+      getProfile(account);
+      getBalance();
       setLoadAccount(false);
     }
   }
@@ -117,7 +92,7 @@ const Headers = () => {
   if (change === true) {
     if (account !== current) {
       setCurrent(account);
-      getChangeProfile().then(() => setChange(false));
+      getChangeProfile(account).then(() => setChange(false));
     }
   }
 
@@ -187,7 +162,12 @@ const Headers = () => {
           <button className={cn("button-small", styles.button)}>Upload</button>
         </Link>
         {active === true ? (
-          <User className={styles.user} user={user} wallet={account} />
+          <User
+            className={styles.user}
+            user={profile}
+            wallet={account}
+            balance={balance}
+          />
         ) : (
           <Link href="/connect-wallet">
             <button className={cn("button-stroke button-small", styles.button)}>
