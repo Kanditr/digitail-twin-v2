@@ -5,22 +5,18 @@ import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./User.module.sass";
 import Icon from "../../Icon";
 import Theme from "../../Theme";
-// import { injected } from "../../wallet/connector";
 import { useWeb3React } from "@web3-react/core";
-import { useRouter } from "next/router";
 
-const User = ({ className, user, wallet }: any) => {
+const User = ({ className, user, wallet, balance }: any) => {
   const [visible, setVisible] = useState(false);
 
-  const { account, deactivate } = useWeb3React();
+  var firstAcc = wallet?.slice(0, 14);
+  var lastAcc = wallet?.slice(wallet.length - 4);
 
-  const router = useRouter();
+  var userBalance = balance?.slice(0, 7);
+  var userBalanceFour = balance?.slice(0, 5);
 
-  var firstAcc = account?.slice(0, 14);
-  var lastAcc = account?.slice(account.length - 4);
-
-  var userBalance = user.balance?.slice(0, 7);
-  var userBalanceFour = user.balance?.slice(0, 5);
+  const { deactivate } = useWeb3React();
 
   async function disconnect() {
     try {
@@ -52,13 +48,6 @@ const User = ({ className, user, wallet }: any) => {
       click: true,
     },
   ];
-
-  function handlePush() {
-    router.push({
-      pathname: `/profile/${wallet}`,
-      // query: { myProfile: true },
-    });
-  }
 
   return (
     <OutsideClickHandler onOutsideClick={() => setVisible(false)}>
@@ -103,27 +92,6 @@ const User = ({ className, user, wallet }: any) => {
               </button>
             </div>
             <div className={styles.menu}>
-              {/* <button onClick={handlePush}>
-                <div
-                  className={styles.item}
-                  onClick={() => setVisible(!visible)}
-                >
-                  <div className={styles.icon}>
-                    <Icon name="user" size="20" />
-                  </div>
-                  <div className={styles.text}>My profile</div>
-                </div>
-              </button>
-              <a
-                className={styles.item}
-                rel="noopener noreferrer"
-                onClick={disconnect}
-              >
-                <div className={styles.icon}>
-                  <Icon name="exit" size="20" />
-                </div>
-                <div className={styles.text}>Disconnect</div>
-              </a> */}
               {items.map((x, index) =>
                 x.url ? (
                   x.click === true ? (
