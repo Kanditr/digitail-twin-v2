@@ -12,6 +12,7 @@ const dateOptions = ["Newest", "Oldest"];
 const likesOptions = ["Most liked", "Least liked"];
 const colorOptions = ["All colors", "Black", "Green", "Pink", "Purple"];
 const creatorOptions = ["Verified only", "All", "Most liked"];
+const priceOptions = ["Highest price", "The lowest price"];
 
 const Search = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -19,6 +20,7 @@ const Search = () => {
   const [likes, setLikes] = useState(likesOptions[0]);
   const [color, setColor] = useState(colorOptions[0]);
   const [creator, setCreator] = useState(creatorOptions[0]);
+  const [price, setPrice] = useState(priceOptions[0]);
 
   const [search, setSearch] = useState("");
 
@@ -36,12 +38,12 @@ const Search = () => {
   const [filtered, setFiltered] = useState([]) as any[];
 
   useEffect(() => {
-    getItems();
+    getItems(dateOptions[0]);
   }, []);
 
-  const getItems = async () => {
+  const getItems = async (query: any) => {
     try {
-      const res = await fetch(`/api/items`, {
+      const res = await fetch(`/api/items?sort=${query}`, {
         method: "GET",
       });
       const items = await res.json();
@@ -51,6 +53,10 @@ const Search = () => {
       console.log(err);
     }
   };
+
+  function changeQuery(e: any) {
+    getItems(e);
+  }
 
   // filter on click nav
   function filter(nav: any) {
@@ -90,7 +96,7 @@ const Search = () => {
                 value={date}
                 setValue={setDate}
                 options={dateOptions}
-                fx={function () {}}
+                fx={(date: any) => changeQuery(date)}
               />
             </div>
             <div className={styles.nav}>
@@ -192,6 +198,16 @@ const Search = () => {
               <div className={styles.group}>
                 <div className={styles.item}>
                   <div className={styles.label}>Price</div>
+                  <Dropdown
+                    className={styles.dropdown}
+                    value={price}
+                    setValue={setPrice}
+                    options={priceOptions}
+                    fx={(price: any) => changeQuery(price)}
+                  />
+                </div>
+                <div className={styles.item}>
+                  <div className={styles.label}>Like</div>
                   <Dropdown
                     className={styles.dropdown}
                     value={likes}
