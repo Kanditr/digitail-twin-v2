@@ -13,7 +13,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { bids } from "../../../mocks/bids";
 
 const navLinks = ["All items", "Art", "Game", "Photography", "Music", "Video"];
-const dateOptions = ["Recently added", "Long added"];
+const dateOptions = ["Newest", "Oldest"];
 const priceOptions = ["Highest price", "The lowest price"];
 const likesOptions = ["Most liked", "Least liked"];
 const creatorOptions = ["Verified only", "All", "Most liked"];
@@ -32,9 +32,7 @@ const Discover = () => {
   const [likes, setLikes] = useState(likesOptions[0]);
   const [creator, setCreator] = useState(creatorOptions[0]);
   const [sorting, setSorting] = useState(sortingOptions[0]);
-
   const [values, setValues] = useState([5]);
-
   const [visible, setVisible] = useState(false);
 
   const STEP = 0.1;
@@ -73,15 +71,12 @@ const Discover = () => {
   // set items and filtered items
   const [items, setItems] = useState([]) as any[];
   const [filtered, setFiltered] = useState([]) as any[];
-
-  useEffect(() => {
-    getItems();
-  }, []);
+  // const [query, setQuery] = useState(date);
 
   // get items from firestore
-  const getItems = async () => {
+  const getItems = async (query: any) => {
     try {
-      const res = await fetch(`/api/items`, {
+      const res = await fetch(`/api/items?sort=${query}`, {
         method: "GET",
       });
       const items = await res.json();
@@ -91,6 +86,14 @@ const Discover = () => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    getItems(dateOptions[0]);
+  }, []);
+
+  function changeQuery(e: any) {
+    getItems(e);
+  }
 
   // filter on click nav
   function filter(nav: any) {
@@ -109,7 +112,7 @@ const Discover = () => {
               value={date}
               setValue={setDate}
               options={dateOptions}
-              fx={function () {}}
+              fx={(date: any) => changeQuery(date)}
             />
           </div>
           <div className={styles.nav}>
@@ -158,7 +161,7 @@ const Discover = () => {
                 value={price}
                 setValue={setPrice}
                 options={priceOptions}
-                fx={function () {}}
+                fx={(price: any) => changeQuery(price)}
               />
             </div>
             <div className={styles.cell}>
@@ -254,8 +257,8 @@ const Discover = () => {
                 )}
               />
               <div className={styles.scale}>
-                <div className={styles.number}>0.01 ETH</div>
-                <div className={styles.number}>10 ETH</div>
+                <div className={styles.number}>0.1 MATIC</div>
+                <div className={styles.number}>10 MATIC</div>
               </div>
             </div>
           </div>
