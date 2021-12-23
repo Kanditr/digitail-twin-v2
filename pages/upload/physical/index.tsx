@@ -5,19 +5,18 @@ import Dropdown from "../../../components/Dropdown/dropdown";
 import Icon from "../../../components/Icon";
 import TextInput from "../../../components/TextInput";
 import Switch from "../../../components/Switch/switch";
-// import Loader from "../components/Loader/loader";
-// import Modal from "../components/Modal/modal";
 import Preview from "./Preview/preview";
 import Cards from "./Cards";
-// import FolowSteps from "./UploadDetails/FolowSteps";
-import Headers from "../../../components/Header/header";
-import Footers from "../../../components/Footer/footer";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import { db } from "../../../firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import Link from "next/link";
+// import Loader from "../components/Loader/loader";
+// import Modal from "../components/Modal/modal";
+// import FolowSteps from "./UploadDetails/FolowSteps";
 
 const royaltiesOptions = ["10%", "20%", "30%"];
 
@@ -163,14 +162,14 @@ const Upload = () => {
         <div className={cn("container", styles.container)}>
           <div className={styles.wrapper}>
             <div className={styles.head}>
-              <div className={cn("h2", styles.title)}>
-                Create single collectible
-              </div>
-              <button
-                className={cn("button-stroke button-small", styles.button)}
-              >
-                Switch to Multiple
-              </button>
+              <div className={cn("h2", styles.title)}>Create Physical Item</div>
+              <Link href="/upload/digital" passHref>
+                <button
+                  className={cn("button-stroke button-small", styles.button)}
+                >
+                  Switch to Digital
+                </button>
+              </Link>
             </div>
             <form className={styles.form} action="">
               <div className={styles.list}>

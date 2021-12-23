@@ -24,14 +24,14 @@ const control = {
 
 const items = [
   {
-    url: "/upload/single",
-    buttonText: "Create Single",
+    url: "/upload/digital",
+    buttonText: "Create Digital",
     image: "/images/content/upload-pic-1.jpg",
     image2x: "/images/content/upload-pic-1@2x.jpg",
   },
   {
-    url: "/upload/single",
-    buttonText: "Create Multiple",
+    url: "/upload/physical",
+    buttonText: "Create Physical",
     image: "/images/content/upload-pic-2.jpg",
     image2x: "/images/content/upload-pic-2@2x.jpg",
   },
@@ -53,9 +53,9 @@ const Upload = () => {
             <div className={styles.top}>
               <h1 className={cn("h2", styles.title)}>Upload item</h1>
               <div className={styles.info}>
-                Choose <span>“Single”</span> if you want your collectible to be
-                one of a kind or <span>“Multiple”</span> if you want to sell one
-                collectible multiple times
+                Choose <span>&quot;Digital&quot;</span> if you want to create
+                digital collectibles or <span>&quot;Physical&quot;</span> if you
+                want to manifest digital NFTs in the physical world
               </div>
             </div>
             <div className={styles.list}>
