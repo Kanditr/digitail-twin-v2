@@ -6,12 +6,15 @@ import styles from "./User.module.sass";
 import Icon from "../../Icon";
 import Theme from "../../Theme";
 import { useWeb3React } from "@web3-react/core";
+import { useAppContext } from "../../../components/context/user";
 
-const User = ({ className, user, wallet, balance }: any) => {
+const User = ({ className }: any) => {
   const [visible, setVisible] = useState(false);
 
-  var firstAcc = wallet?.slice(0, 14);
-  var lastAcc = wallet?.slice(wallet.length - 4);
+  const { balance, profile } = useAppContext();
+
+  var firstAcc = profile.req?.slice(0, 14);
+  var lastAcc = profile.req?.slice(profile.req.length - 4);
 
   var userBalance = balance?.slice(0, 7);
   var userBalanceFour = balance?.slice(0, 5);
@@ -30,7 +33,7 @@ const User = ({ className, user, wallet, balance }: any) => {
     {
       title: "My profile",
       icon: "user",
-      url: `/profile/${wallet}`,
+      url: `/profile/${profile.req}`,
     },
     {
       title: "My items",
@@ -54,8 +57,8 @@ const User = ({ className, user, wallet, balance }: any) => {
       <div className={cn(styles.user, className)}>
         <div className={styles.head} onClick={() => setVisible(!visible)}>
           <div className={styles.avatar}>
-            {user.profile_image ? (
-              <img src={user.profile_image} alt="Avatar" />
+            {profile.profile_image ? (
+              <img src={profile.profile_image} alt="Avatar" />
             ) : (
               <img src="/images/content/no-user.jpeg" alt="Avatar" />
             )}
@@ -66,7 +69,7 @@ const User = ({ className, user, wallet, balance }: any) => {
         </div>
         {visible && (
           <div className={styles.body}>
-            <div className={styles.name}>{user.profile_username}</div>
+            <div className={styles.name}>{profile.profile_username}</div>
             <div className={styles.code}>
               <div className={styles.number}>
                 {firstAcc}...{lastAcc}
