@@ -12,11 +12,11 @@ const Card = ({ className, item }: any) => {
   return (
     <div className={cn(styles.card, className)}>
       <div className={styles.preview}>
-        <div className={styles.previewing}>
-          <div className={styles.previewsub}>
-            <img src={item.file_url} alt="Card" />
-          </div>
+        {/* <div className={styles.previewing}> */}
+        <div className={styles.previewsub}>
+          <img src={item.file_url} alt="Card" />
         </div>
+        {/* </div> */}
         <div className={styles.control}>
           <div
             className={cn(

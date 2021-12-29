@@ -30,7 +30,7 @@ const items = [
       },
       {
         title: "Create item",
-        url: "/upload-variants",
+        url: "/upload",
       },
     ],
   },
