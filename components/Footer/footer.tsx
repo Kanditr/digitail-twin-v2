@@ -48,7 +48,7 @@ const Footers = () => {
       <div className={cn("container", styles.container)}>
         <div className={styles.row}>
           <div className={styles.col}>
-            <Link href="/">
+            <Link href="/" passHref>
               <button className={styles.logo}>Digital Twin</button>
             </Link>
             <div className={styles.info}>The New Creative Economy.</div>
@@ -84,7 +84,10 @@ const Footers = () => {
             Copyright © 2021 DIGITal TWIN. All rights reserved
           </div>
           <div className={styles.note}>
-            We use cookies for better service. <Link href="/#">Accept</Link>
+            We use cookies for better service.{" "}
+            <Link href="/#" passHref>
+              Accept
+            </Link>
           </div>
         </div>
       </div>

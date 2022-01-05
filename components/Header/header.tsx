@@ -39,13 +39,13 @@ const Headers = () => {
   return (
     <header className={styles.header}>
       <div className={cn("container", styles.container)}>
-        <Link href="/">
+        <Link href="/" passHref>
           <button className={styles.logo}>Digital Twin</button>
         </Link>
         <div className={cn(styles.wrapper, { [styles.active]: visibleNav })}>
           <nav className={styles.nav}>
             {nav.map((x, index) => (
-              <Link href={x.url} key={index}>
+              <Link href={x.url} key={index} passHref>
                 <button
                   className={styles.link}
                   onClick={() => setVisibleNav(false)}
@@ -73,20 +73,20 @@ const Headers = () => {
               <Icon name="search" size="20" />
             </button>
           </form>
-          <Link href="/upload">
+          <Link href="/upload" passHref>
             <button className={cn("button-small", styles.button)}>
               Upload
             </button>
           </Link>
         </div>
         <Notification className={styles.notification} />
-        <Link href="/upload">
+        <Link href="/upload" passHref>
           <button className={cn("button-small", styles.button)}>Upload</button>
         </Link>
         {active === true ? (
           <User className={styles.user} />
         ) : (
-          <Link href="/connect-wallet">
+          <Link href="/connect-wallet" passHref>
             <button className={cn("button-stroke button-small", styles.button)}>
               Connect Wallet
             </button>

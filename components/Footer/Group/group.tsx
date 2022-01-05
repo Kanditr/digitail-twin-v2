@@ -26,7 +26,7 @@ const Group = ({ className, item }: any) => {
               {x.title}
             </a>
           ) : (
-            <Link href={x.url} key={index}>
+            <Link href={x.url} key={index} passHref>
               <button className={styles.link}>{x.title}</button>
             </Link>
           )
