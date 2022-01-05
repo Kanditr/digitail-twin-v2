@@ -181,7 +181,7 @@ const Popular = () => {
                     </div>
                     <div className={styles.control}>
                       <Add className={styles.button} />
-                      <Link href={x.url}>
+                      <Link href={x.url} passHref>
                         <button className={styles.button}>
                           <Icon name="arrow-expand" size="24" />
                         </button>

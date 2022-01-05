@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import cn from "classnames";
 import styles from "./Player.module.sass";
 import Icon from "../Icon";
+import Image from "next/image";
 
-const Player = ({ className, item }) => {
+const Player = ({ className, item }: any) => {
   return (
     <div className={cn(styles.player, className)}>
       <div className={styles.preview}>
-        <img
-          srcSet={`${item.image2x} 2x`}
-          src={item.image}
+        <Image
+          src={item.image2x}
           alt="Video preview"
+          width="85%"
+          height="100%"
+          layout="responsive"
+          objectFit="cover"
         />
         <div className={styles.control}>
           <button className={cn(styles.button, styles.play)}>

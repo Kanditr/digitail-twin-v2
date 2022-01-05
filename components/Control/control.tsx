@@ -22,7 +22,7 @@ const Control = ({ className, item }: any) => {
           {item.map((x: any, index: any) => (
             <div className={styles.item} key={index}>
               {x.url ? (
-                <Link href={x.url}>
+                <Link href={x.url} passHref>
                   <button className={styles.link}>{x.title}</button>
                 </Link>
               ) : (

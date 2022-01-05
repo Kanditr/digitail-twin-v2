@@ -3,6 +3,7 @@ import cn from "classnames";
 import Link from "next/link";
 import styles from "./Card.module.sass";
 import Icon from "../Icon";
+import Image from "next/image";
 
 import { bids } from "../../mocks/bids";
 
@@ -12,11 +13,16 @@ const Card = ({ className, item }: any) => {
   return (
     <div className={cn(styles.card, className)}>
       <div className={styles.preview}>
-        {/* <div className={styles.previewing}> */}
-        <div className={styles.previewsub}>
-          <img src={item.file_url} alt="Card" />
+        <div className={styles.previewing}>
+          <Image
+            src={item.file_url}
+            alt="Card"
+            width="85%"
+            height="100%"
+            layout="responsive"
+            objectFit="cover"
+          />
         </div>
-        {/* </div> */}
         <div className={styles.control}>
           <div
             className={cn(
@@ -32,7 +38,7 @@ const Card = ({ className, item }: any) => {
           >
             <Icon name="heart" size="20" />
           </button>
-          <Link href={`/item/${item.id}`}>
+          <Link href={`/item/${item.id}`} passHref>
             <button className={cn("button-small", styles.button)}>
               <span>Place a bid</span>
               <Icon name="scatter-up" size="16" />
@@ -40,7 +46,7 @@ const Card = ({ className, item }: any) => {
           </Link>
         </div>
       </div>
-      <Link href={`/item/${item.id}`}>
+      <Link href={`/item/${item.id}`} passHref>
         <div className={styles.link}>
           <div className={styles.body}>
             <div className={styles.line}>

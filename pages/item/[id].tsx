@@ -4,6 +4,7 @@ import styles from "./Item.module.sass";
 import Users from "./Users/users";
 import Control from "./Control/control";
 import Options from "./Options/options";
+import Image from "next/image";
 
 import { useRouter } from "next/router";
 import { db } from "../../firebase";
@@ -40,7 +41,9 @@ const users = [
 
 const Item = ({ res }: any) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [single, setSingle] = useState({}) as any;
+  const [single, setSingle] = useState({
+    // file_url: "/images/content/avatar-1.jpg",
+  }) as any;
 
   const router = useRouter();
   const { id } = router.query as any;
@@ -62,6 +65,9 @@ const Item = ({ res }: any) => {
 
     setSingle(docSnap.data());
   };
+
+  // const url = single?.file_url;
+  console.log(single);
 
   return (
     <>

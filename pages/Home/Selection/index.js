@@ -84,7 +84,7 @@ const Selection = () => {
             {items.map(
               (x, index) =>
                 index === 0 && (
-                  <Link href={`/item/${x.id}`} key={index}>
+                  <Link href={`/item/${x.id}`} key={index} passHref>
                     <div className={styles.card}>
                       <div className={styles.preview}>
                         <img
@@ -117,7 +117,7 @@ const Selection = () => {
             {items.map(
               (x, index) =>
                 index > 0 && (
-                  <Link href={`/item/${x.id}`} key={index}>
+                  <Link href={`/item/${x.id}`} key={index} passHref>
                     <div className={styles.item}>
                       <div className={styles.preview}>
                         <img
@@ -174,7 +174,7 @@ const Selection = () => {
               </div>
             ))}
           </div>
-          <Link href="/search01">
+          <Link href="/explore" passHref>
             <div className={cn("button-stroke button-small", styles.button)}>
               <span>Discover more</span>
               <Icon name="arrow-next" size="10" />
