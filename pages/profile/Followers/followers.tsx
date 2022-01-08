@@ -1,7 +1,7 @@
 import React from "react";
 import cn from "classnames";
 import styles from "./Followers.module.sass";
-import Loader from "../../../components/Loader/loader";
+import Loader from "../../../components/Loader";
 
 const Followers = ({ className, items }: any) => {
   return (

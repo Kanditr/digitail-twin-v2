@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import cn from "classnames";
 import styles from "../pages/Activity/Activity.module.sass";
 import Control from "../components/Control/control";
-import Loader from "../components/Loader/loader";
+import Loader from "../components/Loader";
 import Icon from "../components/Icon";
 import Filters from "./Activity/Filters/filters";
 

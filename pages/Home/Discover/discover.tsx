@@ -6,11 +6,9 @@ import Slider from "react-slick";
 import Icon from "../../../components/Icon";
 import Card from "../../../components/Card/card";
 import Dropdown from "../../../components/Dropdown/dropdown";
-import { db } from "../../../firebase";
-import { collection, getDocs } from "firebase/firestore";
-
-// data
-import { bids } from "../../../mocks/bids";
+import SkeletonElement from "../../../components/Skeleton/skeletonElement";
+import SkeletonCard from "../../../components/Skeleton/skeletonCard";
+import Loader from "../../../components/Loader";
 
 const navLinks = ["All items", "Art", "Game", "Photography", "Music", "Video"];
 const dateOptions = ["Newest", "Oldest"];
@@ -72,6 +70,7 @@ const Discover = () => {
   const [items, setItems] = useState([]) as any[];
   const [filtered, setFiltered] = useState([]) as any[];
   // const [query, setQuery] = useState(date);
+  const [loading, setLoading] = useState(true);
 
   // get items from firestore
   const getItems = async (query: any) => {
@@ -85,13 +84,16 @@ const Discover = () => {
     } catch (err) {
       console.log(err);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
+    setLoading(true);
     getItems(dateOptions[0]);
   }, []);
 
   function changeQuery(e: any) {
+    setLoading(true);
     getItems(e);
   }
 
@@ -264,14 +266,25 @@ const Discover = () => {
           </div>
         </div>
         <div className={styles.list}>
-          <Slider
-            className={cn("discover-slider", styles.slider)}
-            {...settings}
-          >
-            {filtered.map((x: any, index: any) => (
-              <Card className={styles.card} item={x} key={index} />
-            ))}
-          </Slider>
+          {!loading ? (
+            <Slider
+              className={cn("discover-slider", styles.slider)}
+              {...settings}
+            >
+              {filtered.map((x: any, index: any) => (
+                <Card className={styles.card} item={x} key={index} />
+              ))}
+            </Slider>
+          ) : (
+            <Slider
+              className={cn("discover-slider", styles.slider)}
+              {...settings}
+            >
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+                <SkeletonCard key={n} />
+              ))}
+            </Slider>
+          )}
         </div>
         <div className={styles.btns}>
           <button className={cn("button-stroke button-small", styles.button)}>

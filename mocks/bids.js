@@ -116,7 +116,7 @@ export const bids = [
   {
     id: "6",
     name: "Amazing digital art",
-    price: "2.45 ETH",
+    price: "2.45",
     highestBid: "0.001 ETH",
     counter: "3 in stock",
     bid: 'New bid <span role="img" aria-label="fire">🔥</span>',
