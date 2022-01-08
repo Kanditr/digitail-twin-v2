@@ -2,7 +2,7 @@ import React from "react";
 import cn from "classnames";
 import styles from "./Items.module.sass";
 import Card from "../../../components/Card/card";
-import Loader from "../../../components/Loader/loader";
+import Loader from "../../../components/Loader";
 
 const Items = ({ className, items }: any) => {
   return (

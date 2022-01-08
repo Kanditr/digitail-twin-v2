@@ -7,6 +7,7 @@ import Icon from "../../Icon";
 import Theme from "../../Theme";
 import { useWeb3React } from "@web3-react/core";
 import { useAppContext } from "../../../components/context/user";
+import Loader from "../../Loader";
 
 const User = ({ className }: any) => {
   const [visible, setVisible] = useState(false);
@@ -55,18 +56,26 @@ const User = ({ className }: any) => {
   return (
     <OutsideClickHandler onOutsideClick={() => setVisible(false)}>
       <div className={cn(styles.user, className)}>
-        <div className={styles.head} onClick={() => setVisible(!visible)}>
-          <div className={styles.avatar}>
-            {profile.profile_image ? (
-              <img src={profile.profile_image} alt="Avatar" />
-            ) : (
-              <img src="/images/content/no-user.jpeg" alt="Avatar" />
-            )}
+        {balance && (
+          <div className={styles.head} onClick={() => setVisible(!visible)}>
+            <div className={styles.avatar}>
+              {profile.profile_image ? (
+                <img src={profile.profile_image} alt="Avatar" />
+              ) : (
+                <img src="/images/content/no-user.jpeg" alt="Avatar" />
+              )}
+            </div>
+            <div className={styles.wallet}>
+              {userBalance} <span className={styles.currency}>MATIC</span>
+            </div>
           </div>
-          <div className={styles.wallet}>
-            {userBalance} <span className={styles.currency}>MATIC</span>
+        )}
+        {!balance && (
+          <div className={styles.loaderWrap}>
+            <Loader className={styles.loader} />
+            <div>Connecting...</div>
           </div>
-        </div>
+        )}
         {visible && (
           <div className={styles.body}>
             <div className={styles.name}>{profile.profile_username}</div>
