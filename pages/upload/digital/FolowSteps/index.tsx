@@ -2,11 +2,11 @@ import React from "react";
 import cn from "classnames";
 import styles from "./FolowSteps.module.sass";
 import Icon from "../../../../components/Icon";
-import Loader from "../../../../components/Loader/loader";
+import Loader from "../../../../components/Loader";
 import LoaderCircle from "../../../../components/LoaderCircle";
 import Link from "next/link";
 
-const FolowSteps = ({ className }) => {
+const FolowSteps = ({ className }: any) => {
   return (
     <div className={cn(className, styles.steps)}>
       <div className={cn("h4", styles.title)}>Folow steps</div>
@@ -86,7 +86,7 @@ const FolowSteps = ({ className }) => {
       </div>
       <div className={styles.note}>
         Something went wrong, please{" "}
-        <Link href="/#" target="_blank" rel="noopener noreferrer">
+        <Link href="/" passHref>
           try again
         </Link>
       </div>
