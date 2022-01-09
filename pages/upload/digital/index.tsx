@@ -15,8 +15,10 @@ import { db } from "../../../firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import Link from "next/link";
 // import Loader from "../components/Loader/loader";
-// import Modal from "../components/Modal/modal";
+// import Modal from "../components/Modal/";
+import Modal from "../../../components/Modal/modal";
 // import FolowSteps from "./UploadDetails/FolowSteps";
+import FolowSteps from "./FolowSteps";
 
 const royaltiesOptions = ["10%", "20%", "30%"];
 
@@ -308,7 +310,9 @@ const Upload = () => {
                 </button>
                 <button
                   className={cn("button", styles.button)}
-                  // onClick={() => {setVisibleModal(true)}}
+                  // onClick={() => {
+                  //   setVisibleModal(true);
+                  // }}
                   onClick={createItem}
                   // type="button" hide after form customization
                   type="button"
@@ -333,9 +337,9 @@ const Upload = () => {
           />
         </div>
       </div>
-      {/* <Modal visible={visibleModal} onClose={() => setVisibleModal(false)}>
+      <Modal visible={visibleModal} onClose={() => setVisibleModal(false)}>
         <FolowSteps className={styles.steps} />
-      </Modal> */}
+      </Modal>
       {/* <Footers /> */}
     </>
   );
