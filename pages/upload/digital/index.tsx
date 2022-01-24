@@ -8,156 +8,244 @@ import Switch from "../../../components/Switch/switch";
 import Preview from "./Preview/preview";
 import Cards from "./Cards";
 import { create as ipfsHttpClient } from "ipfs-http-client";
-import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
-import { db } from "../../../firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import Link from "next/link";
-// import Loader from "../components/Loader/loader";
-// import Modal from "../components/Modal/";
 import Modal from "../../../components/Modal/modal";
-// import FolowSteps from "./UploadDetails/FolowSteps";
 import FolowSteps from "./FolowSteps";
+import { useWeb3React } from "@web3-react/core";
 
-const royaltiesOptions = ["10%", "20%", "30%"];
+import { nftaddress, nftmarketaddress } from "../../../config";
 
-const items = [
-  {
-    title: "Create collection",
-    color: "#4BC9F0",
-  },
-  {
-    title: "Crypto Legend - Professor",
-    color: "#45B26B",
-  },
-  {
-    title: "Crypto Legend - Professor",
-    color: "#EF466F",
-  },
-  {
-    title: "Legend Photography",
-    color: "#9757D7",
-  },
-];
+const royaltiesOptions = ["0%", "10%", "20%", "30%"];
+const categoryOptions = ["Art", "Game", "Photography", "Music", "Video"];
+
+// collection mock
+// const items = [
+//   {
+//     title: "Create collection",
+//     color: "#4BC9F0",
+//   },
+//   {
+//     title: "Crypto Legend - Professor",
+//     color: "#45B26B",
+//   },
+//   {
+//     title: "Crypto Legend - Professor",
+//     color: "#EF466F",
+//   },
+//   {
+//     title: "Legend Photography",
+//     color: "#9757D7",
+//   },
+// ];
 
 // ipfs client
 const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0" as any);
-
-const nftaddress = process.env.NEXT_PUBLIC_NFT_ADDRESS;
-const nftmarketaddress = process.env.NEXT_PUBLIC_NFT_MARKET_ADDRESS;
 
 import NFT from "../../../artifacts/contracts/NFT.sol/NFT.json";
 import Market from "../../../artifacts/contracts/NFTMarket.sol/NFTMarket.json";
 
 const Upload = () => {
+  interface Token {
+    name: string;
+    description: string;
+    item_url: string;
+    file_url: string;
+    tokenId: string | null | number;
+    category: string;
+    creator: string;
+    ownerAddress: string[];
+  }
+
+  enum Status {
+    Success = "success",
+    Failed = "failed",
+  }
+
+  // const [locking, setLocking] = useState(false);
+  // const [sale, setSale] = useState(true);
   const [royalties, setRoyalties] = useState(royaltiesOptions[0]) as string[];
-  const [sale, setSale] = useState(true);
+  const [category, setCategory] = useState(categoryOptions[0]) as string[];
   const [price, setPrice] = useState(false);
-  const [locking, setLocking] = useState(false);
-  // follow step modal
   const [visibleModal, setVisibleModal] = useState(false);
-  // preview modal
   const [visiblePreview, setVisiblePreview] = useState(false);
-
-  // input form state
   const [fileUrl, setFileUrl] = useState(null) as any;
-  const [formInput, updateFormInput] = useState({
-    price: "",
+  const [item, setItem] = useState({
     name: "",
+    price: "",
     description: "",
-  }) as any;
+    tokenId: "",
+  });
+  const [mintState, setMintState] = useState("pending");
+  const [sellState, setSellState] = useState("disabled");
 
-  // router
-  const router = useRouter();
+  const { account }: any = useWeb3React();
 
-  // create file ipfs url
-  async function onChange(e: any) {
+  function openModal() {
+    // form validation
+    const { name, description } = item;
+    if (!name || !description) return alert("Please fill in required data");
+    if (!fileUrl) return alert("Please upload item");
+    if (!account) return alert("Please connect wallet");
+
+    // open modal
+    setVisibleModal(true);
+  }
+
+  async function uploadFile(e: any) {
     const file = e.target.files[0];
     try {
-      const added = await client.add(file, {
+      const uploaded = await client.add(file, {
         progress: (prog) => console.log(`received: ${prog}`),
       });
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const url = `https://ipfs.infura.io/ipfs/${uploaded.path}`;
       setFileUrl(url);
     } catch (e) {
       console.log(e);
     }
   }
 
-  // create item (include file url) ipfs url
-  async function createItem() {
-    const { name, description, price } = formInput;
+  async function createToken() {
+    const { name, description, price } = item;
     if (!name || !description || !price || !fileUrl) return;
+    /* first, upload to IPFS */
     const data = JSON.stringify({
       name,
       description,
       image: fileUrl,
     });
-
     try {
       const added = await client.add(data);
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-      createSale(url);
+      /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
+
+      const web3Modal = new Web3Modal();
+      const connection = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
+      const signer = provider.getSigner();
+
+      /* next, create the item */
+      let contract = new ethers.Contract(nftaddress, NFT.abi, signer);
+      let transaction = await contract.createToken(url);
+      let tx = await transaction.wait();
+      let event = tx.events[0];
+      let value = event.args[2];
+      let tokenId = value.toNumber();
+
+      setItem({
+        ...item,
+        tokenId: tokenId.toString(),
+      });
+
+      /* add item to database */
+      const key = tokenId.toString();
+      try {
+        const body: Token = {
+          name: item.name,
+          description: item.description,
+          category: category,
+          item_url: url,
+          file_url: fileUrl,
+          tokenId: key,
+          creator: account,
+          ownerAddress: [account],
+        };
+        const res = (await fetch(`/api/item/mint`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        })) as any;
+        const resBody = await res.json();
+        console.log({ status: res.status, message: resBody.message });
+      } catch (error) {
+        console.log(error);
+        return {
+          status: Status.Failed,
+          message: `Failed to add item no.${tokenId} to database`,
+        };
+      }
+
+      return {
+        status: Status.Success,
+        message: `Minted item no.${tokenId}`,
+      };
     } catch (error) {
-      console.log("Error uploading file:", error);
+      return {
+        status: Status.Failed,
+        message: `Failed to mint item`,
+      };
     }
   }
 
-  // create sale
-  async function createSale(url: any) {
+  async function createSale(tokenId: string) {
     const web3Modal = new Web3Modal();
     const connection = await web3Modal.connect();
     const provider = new ethers.providers.Web3Provider(connection);
     const signer = provider.getSigner();
+    const price = ethers.utils.parseUnits(item.price, "ether");
+    const token = Number(tokenId);
 
-    // createToken - mint Token
-    let contract = new ethers.Contract(nftaddress as string, NFT.abi, signer);
-    let transaction = await contract.createToken(url);
-    let tx = await transaction.wait();
-
-    let event = tx.events[0];
-    let value = event.args[2];
-    let tokenId = value.toNumber();
-
-    const price = ethers.utils.parseUnits(formInput.price, "ether");
-
-    // createMarketItem - put on sale
-    contract = new ethers.Contract(
-      nftmarketaddress as string,
-      Market.abi,
-      signer
-    );
-    let listingPrice = await contract.getListingPrice();
-    listingPrice = listingPrice.toString();
-
-    transaction = await contract.createMarketItem(nftaddress, tokenId, price, {
-      value: listingPrice,
-    });
-    await transaction.wait();
-
-    // add data to firestore
     try {
-      const docRef = await addDoc(collection(db, "items"), {
-        price: formInput.price,
-        name: formInput.name,
-        description: formInput.description,
-        item_url: url,
-        file_url: fileUrl,
-        tokenId: tokenId,
-        isSold: false,
-        timeStamp: serverTimestamp(),
-      });
-      console.log("Document written with ID: ", docRef.id);
-      router.push(`/item/${docRef.id}`);
-    } catch (e) {
-      console.error("Error adding document: ", e);
+      /* then list the item for sale on the marketplace */
+      let contract = new ethers.Contract(nftmarketaddress, Market.abi, signer);
+      let listingPrice = await contract.getListingPrice();
+      listingPrice = listingPrice.toString();
+
+      let transaction = await contract.createMarketItem(
+        nftaddress,
+        token,
+        price,
+        {
+          value: listingPrice,
+        }
+      );
+      const tx = await transaction.wait();
+      let event = tx.events[3].args;
+      let itemId = event.itemId.toNumber();
+
+      /* update item in database */
+      try {
+        const body = {
+          tokenId: item.tokenId.toString(),
+          itemId: itemId,
+          price: item.price,
+        };
+        const res = (await fetch(`/api/item/sale`, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        })) as any;
+        const resBody = await res.json();
+        console.log({ status: res.status, message: resBody.message });
+      } catch (error) {
+        console.log(error);
+        return {
+          status: Status.Failed,
+          message: `Failed to update item no.${item.tokenId} in database`,
+        };
+      }
+
+      return {
+        status: Status.Success,
+        message: `Success create sale of tokenId.${item.tokenId} to market itemId.${itemId}`,
+      };
+    } catch (error) {
+      return {
+        status: Status.Failed,
+        message: `Failed adding item no.${item.tokenId} to market`,
+      };
     }
   }
 
   return (
     <>
-      {/* <Headers /> */}
       <div className={cn("section", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.wrapper}>
@@ -183,7 +271,7 @@ const Upload = () => {
                     <input
                       className={styles.load}
                       type="file"
-                      onChange={onChange}
+                      onChange={uploadFile}
                     />
                     <div className={styles.icon}>
                       <Icon name="upload-file" size="24" />
@@ -204,7 +292,7 @@ const Upload = () => {
                       type="text"
                       placeholder='e. g. Redeemable Bitcoin Card with logo"'
                       onChange={(e: any) =>
-                        updateFormInput({ ...formInput, name: e.target.value })
+                        setItem({ ...item, name: e.target.value })
                       }
                       required
                     />
@@ -215,8 +303,8 @@ const Upload = () => {
                       type="text"
                       placeholder="e. g. “After purchasing you will able to recived the logo...”"
                       onChange={(e: any) =>
-                        updateFormInput({
-                          ...formInput,
+                        setItem({
+                          ...item,
                           description: e.target.value,
                         })
                       }
@@ -231,33 +319,19 @@ const Upload = () => {
                             value={royalties}
                             setValue={setRoyalties}
                             options={royaltiesOptions}
+                            fx={function () {}}
                           />
                         </div>
                       </div>
                       <div className={styles.col}>
-                        <TextInput
-                          className={styles.field}
-                          label="Price"
-                          name="Price"
-                          type="text"
-                          placeholder="e. g. 10 MATIC"
-                          onChange={(e: any) =>
-                            updateFormInput({
-                              ...formInput,
-                              price: e.target.value,
-                            })
-                          }
-                          required
-                        />
-                      </div>
-                      <div className={styles.col}>
-                        <TextInput
-                          className={styles.field}
-                          label="Propertie"
-                          name="Propertie"
-                          type="text"
-                          placeholder="e. g. Propertie"
-                          // required
+                        <div className={styles.label}>Category</div>
+                        <Dropdown
+                          className={styles.dropdown}
+                          value={category}
+                          setValue={setCategory}
+                          options={categoryOptions}
+                          // to extract fx function
+                          fx={function () {}}
                         />
                       </div>
                     </div>
@@ -265,39 +339,60 @@ const Upload = () => {
                 </div>
               </div>
               {/* switch */}
+              <div className={styles.option}>
+                <div className={styles.box}>
+                  <div className={styles.category}>Put on sale</div>
+                  <div className={styles.text}>
+                    Enter the price for which the item will be instantly sold
+                  </div>
+                </div>
+                <Switch value={price} setValue={setPrice} />
+              </div>
+              {price && (
+                <div className={styles.instantPrice}>
+                  <TextInput
+                    className={styles.field}
+                    label=""
+                    name="Price"
+                    type="text"
+                    placeholder="e. g. 10 MATIC"
+                    onChange={(e: any) =>
+                      setItem({
+                        ...item,
+                        price: e.target.value,
+                      })
+                    }
+                    required
+                  />
+                </div>
+              )}
               <div className={styles.options}>
                 <div className={styles.option}>
                   <div className={styles.box}>
-                    <div className={styles.category}>Put on sale</div>
+                    <div className={styles.category}>Open for bid</div>
                     <div className={styles.text}>
                       You’ll receive bids on this item
                     </div>
                   </div>
-                  <Switch value={sale} setValue={setSale} />
+                  <div>Coming soon</div>
+                  {/* <Switch value={sale} setValue={setSale} /> */}
                 </div>
                 <div className={styles.option}>
                   <div className={styles.box}>
-                    <div className={styles.category}>Instant sale price</div>
+                    <div className={styles.category}>Unlockable content</div>
                     <div className={styles.text}>
-                      Enter the price for which the item will be instantly sold
+                      Content will be able to unlock after successful
+                      transaction
                     </div>
                   </div>
-                  <Switch value={price} setValue={setPrice} />
+                  <div>Coming soon</div>
+                  {/* <Switch value={locking} setValue={setLocking} /> */}
                 </div>
-                <div className={styles.option}>
-                  <div className={styles.box}>
-                    <div className={styles.category}>Unlock once purchased</div>
-                    <div className={styles.text}>
-                      Content will be unlocked after successful transaction
-                    </div>
-                  </div>
-                  <Switch value={locking} setValue={setLocking} />
-                </div>
-                <div className={styles.category}>Choose collection</div>
+                {/* <div className={styles.category}>Choose collection</div>
                 <div className={styles.text}>
                   Choose an exiting collection or create a new one
                 </div>
-                <Cards className={styles.cards} items={items} />
+                <Cards className={styles.cards} items={items} /> */}
               </div>
               {/* foot */}
               <div className={styles.foot}>
@@ -310,11 +405,8 @@ const Upload = () => {
                 </button>
                 <button
                   className={cn("button", styles.button)}
-                  // onClick={() => {
-                  //   setVisibleModal(true);
-                  // }}
-                  onClick={createItem}
-                  // type="button" hide after form customization
+                  onClick={() => openModal()}
+                  // onClick={() => createMarket()}
                   type="button"
                 >
                   <span>Create item</span>
@@ -332,15 +424,23 @@ const Upload = () => {
               [styles.active]: visiblePreview,
             })}
             onClose={() => setVisiblePreview(false)}
-            file={fileUrl}
-            form={formInput}
+            form={item}
+            fileUrl={fileUrl}
           />
         </div>
       </div>
       <Modal visible={visibleModal} onClose={() => setVisibleModal(false)}>
-        <FolowSteps className={styles.steps} />
+        <FolowSteps
+          className={styles.steps}
+          visible={setVisibleModal}
+          price={price}
+          mintItem={createToken}
+          sellItem={createSale}
+          mintParent={[mintState, setMintState]}
+          saleParent={[sellState, setSellState]}
+          token={item.tokenId}
+        />
       </Modal>
-      {/* <Footers /> */}
     </>
   );
 };
