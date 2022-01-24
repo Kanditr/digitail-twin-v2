@@ -10,44 +10,43 @@ const FolowSteps = ({
   className,
   price,
   mintParent,
+  mintParentFx,
   saleParent,
+  saleParentFx,
   visible,
   mintItem,
   sellItem,
   token,
 }: any) => {
-  const { mintState, setMintState } = mintParent;
-  const { sellState, setSellState } = saleParent;
-
   async function minting() {
     console.log("Minting...");
-    setMintState("loading");
+    mintParentFx("loading");
 
     const result = await mintItem();
     console.log(result);
 
     if (result.status === "failed") {
-      setMintState("failed");
+      mintParentFx("failed");
     }
 
     if (result.status === "success") {
-      setMintState("done");
-      setSellState("pending");
+      mintParentFx("done");
+      saleParentFx("pending");
     }
   }
 
   const selling = async () => {
     console.log("Selling...");
-    setSellState("loading");
+    saleParentFx("loading");
     const result = await sellItem(token);
     console.log(result);
 
     if (result.status === "failed") {
-      setSellState("failed");
+      saleParentFx("failed");
     }
 
     if (result.status === "success") {
-      setSellState("done");
+      saleParentFx("done");
     }
   };
 
@@ -56,52 +55,52 @@ const FolowSteps = ({
       <div className={cn("h4", styles.title)}>Folow steps</div>
       {!price && (
         <div className={styles.list}>
-          {mintState === "pending" && (
+          {mintParent === "pending" && (
             <Step name={mint} state={pending} onClick={() => minting()} />
           )}
-          {mintState === "loading" && (
+          {mintParent === "loading" && (
             <Step name={mint} state={loading} onClick={() => {}} />
           )}
-          {mintState === "done" && (
+          {mintParent === "done" && (
             <Step name={mint} state={done} onClick={() => visible(false)} />
           )}
-          {mintState === "failed" && (
+          {mintParent === "failed" && (
             <Step name={mint} state={failed} onClick={() => visible(false)} />
           )}
         </div>
       )}
       {price && (
         <div className={styles.list}>
-          {mintState === "pending" && (
+          {mintParent === "pending" && (
             <Step name={mint} state={pending} onClick={() => minting()} />
           )}
-          {mintState === "loading" && (
+          {mintParent === "loading" && (
             <Step name={mint} state={loading} onClick={() => {}} />
           )}
-          {mintState === "done" && (
+          {mintParent === "done" && (
             <Step name={mint} state={done} onClick={() => visible(false)} />
           )}
-          {mintState === "failed" && (
+          {mintParent === "failed" && (
             <Step name={mint} state={failed} onClick={() => visible(false)} />
           )}
-          {sellState === "disabled" && (
+          {saleParent === "disabled" && (
             <Step name={sell} state={disabled} onClick={() => {}} />
           )}
-          {sellState === "pending" && (
+          {saleParent === "pending" && (
             <Step name={sell} state={pending} onClick={() => selling()} />
           )}
-          {sellState === "loading" && (
+          {saleParent === "loading" && (
             <Step name={sell} state={loading} onClick={() => {}} />
           )}
-          {sellState === "done" && (
+          {saleParent === "done" && (
             <Step name={sell} state={done} onClick={() => visible(false)} />
           )}
-          {sellState === "failed" && (
+          {saleParent === "failed" && (
             <Step name={sell} state={failed} onClick={() => visible(false)} />
           )}
         </div>
       )}
-      {mintState === "done" && (
+      {mintParent === "done" && (
         <div className={styles.note}>
           Success minted!{" "}
           <Link href="#" passHref>
@@ -110,7 +109,7 @@ const FolowSteps = ({
           </Link>
         </div>
       )}
-      {mintState === "failed" && (
+      {mintParent === "failed" && (
         <div className={styles.note}>
           Something went wrong, please{" "}
           <Link href="/" passHref>
