@@ -15,6 +15,8 @@ import Blockheaer from "../components/Block/blockheader";
 import NFT from "../artifacts/contracts/NFT.sol/NFT.json";
 import Market from "../artifacts/contracts/NFTMarket.sol/NFTMarket.json";
 
+import { nftaddress, nftmarketaddress } from "../config";
+
 const BlockIndex: NextPage = () => {
   const [nfts, setNfts] = useState([] as any[]);
   const [loadingState, setLoadingState] = useState("not-loaded");
@@ -67,7 +69,7 @@ const BlockIndex: NextPage = () => {
 
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_NFT_MARKET_ADDRESS as string,
+      nftmarketaddress as string,
       Market.abi,
       signer
     );
@@ -75,7 +77,7 @@ const BlockIndex: NextPage = () => {
     const price = ethers.utils.parseUnits(nft.price.toString(), "ether");
 
     const transaction = await contract.createMarketSale(
-      process.env.NEXT_PUBLIC_NFT_ADDRESS as string,
+      nftaddress as string,
       nft.tokenId,
       {
         value: price,

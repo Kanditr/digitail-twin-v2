@@ -13,7 +13,11 @@ import SuccessfullyPurchased from "../SuccessfullyPurchased/successfullyPurchase
 import NFT from "../../../../artifacts/contracts/NFT.sol/NFT.json";
 import Market from "../../../../artifacts/contracts/NFTMarket.sol/NFTMarket.json";
 
+import { nftaddress, nftmarketaddress } from "../../../../config";
+
 const Checkout = ({ className, item, id }: any) => {
+  console.log(item);
+
   const items = [
     {
       title: `${item?.price || ""}`,
@@ -40,37 +44,71 @@ const Checkout = ({ className, item, id }: any) => {
     setBuying(true);
   }
 
-  async function buyNft() {
-    setBuying(true);
+  /////////////
+  // working code
+  async function buyNft2(nft: any) {
     const web3Modal = new Web3Modal();
     const connection = await web3Modal.connect();
     const provider = new ethers.providers.Web3Provider(connection);
-
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_NFT_MARKET_ADDRESS as string,
+      nftmarketaddress as string,
       Market.abi,
       signer
     );
+    console.log(nft);
 
-    const price = ethers.utils.parseUnits(item.price.toString(), "ether");
-
+    const price2 = ethers.utils.parseUnits(nft.price, "ether");
+    const token = Number(nft.itemId);
     const transaction = await contract.createMarketSale(
-      process.env.NEXT_PUBLIC_NFT_ADDRESS as string,
-      item.tokenId,
+      nftaddress as string,
+      token,
       {
-        value: price || "",
+        value: price2,
       }
     );
     await transaction.wait();
+  }
+  /////////////
 
-    // update isSold to database
-    const itemRef = doc(db, "items", id);
-    await updateDoc(itemRef, {
-      isSold: true,
-    });
+  async function buyNft() {
+    setBuying(true);
+    try {
+      const web3Modal = new Web3Modal();
+      const connection = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
 
-    setSuccess(true);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_NFT_MARKET_ADDRESS as string,
+        Market.abi,
+        signer
+      );
+
+      const price = ethers.utils.parseUnits(item.price.toString(), "ether");
+      const token = Number(item.tokenId);
+
+      console.log(token);
+      console.log(price);
+
+      const transaction = await contract.createMarketSale(
+        process.env.NEXT_PUBLIC_NFT_ADDRESS as string,
+        token,
+        {
+          value: price,
+        }
+      );
+      await transaction.wait();
+
+      // update isSold to database
+      // const itemRef = doc(db, "items", id);
+      // await updateDoc(itemRef, {
+      //   isSold: true,
+      // });
+      // setSuccess(true);
+    } catch (error) {
+      console.log(error);
+    }
 
     // loadNFTs();
   }
@@ -121,7 +159,10 @@ const Checkout = ({ className, item, id }: any) => {
       </div> */}
       {buying === false ? (
         <div className={styles.btns}>
-          <button className={cn("button", styles.button)} onClick={buyNft}>
+          <button
+            className={cn("button", styles.button)}
+            onClick={() => buyNft2(item)}
+          >
             I understand, continue
           </button>
           {/* <button className={cn("button-stroke", styles.button)}>Cancel</button> */}

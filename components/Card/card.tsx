@@ -15,7 +15,7 @@ const Card = ({ className, item }: any) => {
       <div className={styles.preview}>
         <div className={styles.previewing}>
           <Image
-            src={item.file_url}
+            src={item?.file_url}
             alt="Card"
             width="85%"
             height="100%"

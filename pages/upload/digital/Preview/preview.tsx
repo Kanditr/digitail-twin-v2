@@ -3,7 +3,7 @@ import cn from "classnames";
 import styles from "./Preview.module.sass";
 import Icon from "../../../../components/Icon";
 
-const Preview = ({ className, onClose, file, form }: any) => {
+const Preview = ({ className, onClose, form, fileUrl }: any) => {
   return (
     <div className={cn(className, styles.wrap)}>
       <div className={styles.inner}>
@@ -11,11 +11,11 @@ const Preview = ({ className, onClose, file, form }: any) => {
           <Icon name="close" size="14" />
         </button>
         <div className={styles.info}>Preview</div>
-        {file ? (
+        {fileUrl ? (
           <div>
             <div className={styles.card}>
               <div className={styles.preview}>
-                <img srcSet={file} src={file} alt="Card" />
+                <img srcSet={fileUrl} src={fileUrl} alt="Card" />
               </div>
               <div className={styles.link}>
                 <div className={styles.body}>
