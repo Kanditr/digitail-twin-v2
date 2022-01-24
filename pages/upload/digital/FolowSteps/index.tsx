@@ -16,8 +16,8 @@ const FolowSteps = ({
   sellItem,
   token,
 }: any) => {
-  const [mintState, setMintState] = mintParent;
-  const [sellState, setSellState] = saleParent;
+  const { mintState, setMintState } = mintParent;
+  const { sellState, setSellState } = saleParent;
 
   async function minting() {
     console.log("Minting...");

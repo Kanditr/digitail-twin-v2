@@ -436,8 +436,8 @@ const Upload = () => {
           price={price}
           mintItem={createToken}
           sellItem={createSale}
-          mintParent={[mintState, setMintState]}
-          saleParent={[sellState, setSellState]}
+          mintParent={{ mintState, setMintState }}
+          saleParent={{ sellState, setSellState }}
           token={item.tokenId}
         />
       </Modal>
