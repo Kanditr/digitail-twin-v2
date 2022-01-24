@@ -52,7 +52,7 @@ const FolowSteps = ({
 
   return (
     <div className={cn(className, styles.steps)}>
-      <div className={cn("h4", styles.title)}>Folow steps</div>
+      <div className={cn("h4", styles.title)}>Follow steps</div>
       {!price && (
         <div className={styles.list}>
           {mintParent === "pending" && (
