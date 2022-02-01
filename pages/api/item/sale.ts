@@ -19,7 +19,7 @@ export default async function profileHandler(
           {
             price: item.price,
             itemId: item.itemId,
-            isSold: true,
+            onMarket: true,
             marketTimeStamp: serverTimestamp(),
           },
           { merge: true }
