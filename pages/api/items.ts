@@ -1,5 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getDocs, query, collection, orderBy, limit } from "firebase/firestore";
+import {
+  getDocs,
+  query,
+  collection,
+  orderBy,
+  limit,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 
 export default async function getid(req: NextApiRequest, res: NextApiResponse) {
@@ -28,7 +35,15 @@ export default async function getid(req: NextApiRequest, res: NextApiResponse) {
 
   switch (method) {
     case "GET":
-      const q = query(collection(db, "items"), orderBy(foo, bar), limit(8));
+      const q = query(
+        collection(db, "items"),
+        // [ ] enhance sorting logic in backend
+        // where("price", "<", "1"),
+        where("onMarket", "==", true),
+        // orderBy("onMartket"),
+        // orderBy(foo, bar),
+        limit(8)
+      );
 
       const querySnapshot = await getDocs(q);
       const items = querySnapshot.docs.map((doc) => ({
